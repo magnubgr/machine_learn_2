@@ -13,25 +13,59 @@ def read_credit_card_file():
 
     df.rename(
         index=str,
-        columns={"default payment next month": "defaultPaymentNextMonth"},
+        columns={"default payment next month": "default"},
         inplace=True
     )
 
-    columns_df = df.columns
-    columns_np = columns_df.values
+    from IPython.display import display
+    display(df)
 
-    id_labels_df = df.index
-    id_labels_np = id_labels_df.values
+
+    ### Check if df["SEX"] has other values than 1,2
+    print( np.unique( df["SEX"].values) )
+    ### Check if df["EDUCATION"] has other values than 1,2,3,4 ---- apparently 0,5,6
+    print( np.unique( df["EDUCATION"].values) )
+    ### Check if df["MARRIAGE"] has other values than 1,2,3    ---- apparently 0
+    print( np.unique( df["MARRIAGE"].values) )
+
+    ## Consider one-hot encoding PAY_0-PAY_6... but lots of work
+    ### What does 0 mean?
+    #### Test out using just PAYed on time or not (0, 1)
+
+    # One-hot encoding the gender
+    df["MALE"] = (df["SEX"]==1).astype("int")
+    df.drop("SEX", axis=1, inplace=True)
+
+    # One-hot encoding for education
+    df["GRADUATE_SCHOOL"] = (df["EDUCATION"]==1).astype("int")
+    df["UNIVERSITY"] = (df["EDUCATION"]==2).astype("int")
+    df["HIGH_SCHOOL"] = (df["EDUCATION"]==3).astype("int")
+    df.drop("EDUCATION", axis=1, inplace=True)
+
+    # One-hot encoding for marriage
+    df["MARRIED"] = (df["MARRIAGE"]==1).astype("int")
+    df["SINGLE"] = (df["MARRIAGE"]==2).astype("int")
+    df.drop("MARRIAGE", axis=1, inplace=True)
+
+    # display(df)
+
+
+
+    # columns_df = df.columns
+    # columns_np = columns_df.values
+
+    # id_labels_df = df.index
+    # id_labels_np = id_labels_df.values
 
     X = df.loc[:, df.columns != 'defaultPaymentNextMonth'].values
     y = df.loc[:, df.columns == 'defaultPaymentNextMonth'].values
-    # print(X)
-    # print(y)
-    print('The scikit-learn version is {}.'.format(sklearn.__version__))
+    # print(np.shape(X))
+    # print(np.shape(y))
 
     return X, y
 
-    """ This is in case we need the individual columns
+'''
+    This is in case we need the individual columns
     limit_bal = df['LIMIT_BAL']
     sex = df['SEX']
     education = df['EDUCATION']
@@ -56,7 +90,7 @@ def read_credit_card_file():
     pay_amt5 = df['PAY_AMT5']
     pay_amt6 = df['PAY_AMT6']
     default = df['defaultPaymentNextMonth']
-    """
+'''
 
     # print(df)
 
