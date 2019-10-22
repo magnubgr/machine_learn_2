@@ -484,6 +484,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+
+# Visual Studio Code
+.vscode/*
+
 # End of https://www.gitignore.io/api/git,c++,latex,linux,python,windows
 
 

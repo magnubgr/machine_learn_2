@@ -1,10 +1,12 @@
 import numpy as np
 import pandas as pd
+import sklearn
 
+## Also xlrd is needed
 
 def read_credit_card_file():
 
-    file = "../data/default_credit_card_data.xls"
+    file = "../data/default_credit_card_data.xls" # fix this pointer
 
     # df = pd.read_excel(file, header=[0, 1], sheetname="Data")
     df = pd.read_excel(file, header=1, skiprows=0, index_col=0)
@@ -25,6 +27,7 @@ def read_credit_card_file():
     y = df.loc[:, df.columns == 'defaultPaymentNextMonth'].values
     # print(X)
     # print(y)
+    print('The scikit-learn version is {}.'.format(sklearn.__version__))
 
     return X, y
 
