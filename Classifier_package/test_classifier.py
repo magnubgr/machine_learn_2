@@ -14,13 +14,10 @@ class Regsolver_test(unittest.TestCase):
         """
         check that the sigmoid function is calculated correctly
         """
-        np.random.seed(2)
-        n = 50000;sigma = 2
-        x = np.linspace(0,1,n)
-        y = np.linspace(0,1,n)
-        y_data = np.random.normal(0,sigma,n)
-        obj = Classifier(x,y,y_data)
-        self.assertAlmostEqual(obj.sigmoid(0),0.5)
+        obj = Classifier(1,1,1)
+        self.assertEqual(obj.sigmoid(0),0.5)
+        self.assertAlmostEqual(obj.sigmoid(1), 1/(1+np.exp(-1)))
+
 
 if __name__ == '__main__':
     unittest.main()
