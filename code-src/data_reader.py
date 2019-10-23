@@ -22,8 +22,7 @@ def read_credit_card_file():
         inplace=True
     )
 
-    from IPython.display import display
-    display(df)
+    print(df)
 
 
     ### Check if df["SEX"] has other values than 1,2
@@ -36,8 +35,42 @@ def read_credit_card_file():
     print("PAY_0", np.unique( df["PAY_0"].values) )
     ### Check if df["PAY_2"] has other values than -1,..,9
     print("PAY_2", np.unique( df["PAY_2"].values) )
+    ### Check if df["PAY_3"] has other values than -1,..,9
+    print("PAY_3", np.unique( df["PAY_3"].values) )
     ### Check if df["PAY_4"] has other values than -1,..,9
     print("PAY_4", np.unique( df["PAY_4"].values) )
+    ### Check if df["PAY_5"] has other values than -1,..,9
+    print("PAY_5", np.unique( df["PAY_5"].values) )
+    ### Check if df["PAY_6"] has other values than -1,..,9
+    print("PAY_6", np.unique( df["PAY_6"].values) )
+
+
+    ## Drop rows that are outside of features given
+    df = df[(df.EDUCATION != 0) & 
+            (df.EDUCATION != 5) & 
+            (df.EDUCATION != 6)]
+    df = df[ (df.MARRIAGE != 0) ]
+
+    for dfpay in [df.PAY_0, df.PAY_2, df.PAY_3, df.PAY_4, df.PAY_5, df.PAY_6]:
+        df = df[(dfpay != -2) ]
+                # &(dfpay != 0)]
+
+    ### Check if df["SEX"] has other values than 1,2
+    print("SEX", np.unique( df["SEX"].values) )
+    ### Check if df["EDUCATION"] has other values than 1,2,3,4 ---- apparently 0,5,6
+    print("EDUCATION", np.unique( df["EDUCATION"].values) )
+    ### Check if df["MARRIAGE"] has other values than 1,2,3    ---- apparently 0
+    print("MARRIAGE", np.unique( df["MARRIAGE"].values) )
+    ### Check if df["PAY_0"] has other values than -1,..,9
+    print("PAY_0", np.unique( df["PAY_0"].values) )
+    ### Check if df["PAY_2"] has other values than -1,..,9
+    print("PAY_2", np.unique( df["PAY_2"].values) )
+    ### Check if df["PAY_3"] has other values than -1,..,9
+    print("PAY_3", np.unique( df["PAY_3"].values) )
+    ### Check if df["PAY_4"] has other values than -1,..,9
+    print("PAY_4", np.unique( df["PAY_4"].values) )
+    ### Check if df["PAY_5"] has other values than -1,..,9
+    print("PAY_5", np.unique( df["PAY_5"].values) )
     ### Check if df["PAY_6"] has other values than -1,..,9
     print("PAY_6", np.unique( df["PAY_6"].values) )
 
@@ -61,7 +94,11 @@ def read_credit_card_file():
     df["SINGLE"] = (df["MARRIAGE"]==2).astype("int")
     df.drop("MARRIAGE", axis=1, inplace=True)
 
-    display(df)
+
+    # df.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
+    # df.drop_duplicates()
+
+    print(df)
 
 
 
@@ -72,8 +109,8 @@ def read_credit_card_file():
     # id_labels_np = id_labels_df.values
 
 
-    X = df.loc[:, df.columns != 'defaultPaymentNextMonth'].values
-    y = df.loc[:, df.columns == 'defaultPaymentNextMonth'].values
+    X = df.loc[:, df.columns != 'DEFAULT'].values
+    y = df.loc[:, df.columns == 'DEFAULT'].values
 
     ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE 
     standard_scaler = StandardScaler()
@@ -87,7 +124,16 @@ def read_credit_card_file():
     test_size = 0.3
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
 
+    print(X)
+    print(y)
 
+    from sklearn.linear_model import LogisticRegression
+    log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
+    log_reg.fit(X, y.ravel())
+    # log_reg.predict(x)
+    log_reg.predict(X[:2, :])
+    log_reg.predict_proba(X[:2, :]) 
+    print(log_reg.score(X, y.ravel()))
 
     return X, y
 
