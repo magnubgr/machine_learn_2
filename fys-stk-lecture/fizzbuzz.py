@@ -95,6 +95,6 @@ for i in range(100):
     pred = model.predict(
     binary_encoding(i, NUM_DIGITS).reshape(1,-1))
     print( f"{fizz_buzz(i,fizz_buzz_one_hot(i)):<10} "
-    + f"|| {fizz_buzz(1,pred)}")
+    + f"|| {fizz_buzz(i,pred)}")
 
 # Output response of the first 100 numbers
