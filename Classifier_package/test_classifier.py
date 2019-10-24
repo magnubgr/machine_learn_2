@@ -1,4 +1,4 @@
-from classifier import Classifier
+from Classifier_package.classifier import Classifier
 import numpy as np
 import unittest
 
@@ -18,6 +18,15 @@ class Regsolver_test(unittest.TestCase):
         self.assertEqual(obj.sigmoid(0),0.5)
         self.assertAlmostEqual(obj.sigmoid(1), 1/(1+np.exp(-1)))
 
+    def test_accuracy(self):
+        """
+        checks the accuracy function that checks the model with actual data
+        """
+        obj = Classifier(1,1,1)
+        y_actual = np.array([1,1,0,0])
+        y_model = np.array([1,1,1,0])
+        self.assertEqual(obj.accuracy(y_actual,y_model),0.75)
+        self.assertEqual(obj.accuracy(y_actual,y_actual),1)
 
 if __name__ == '__main__':
     unittest.main()

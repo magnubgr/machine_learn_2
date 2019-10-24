@@ -57,6 +57,10 @@ class Classifier:
 
 
     def display_data(self,):
+        """
+        prints the df to display the data
+        Checks that you have read the data
+        """
         if (self.read_data==True):
             print ("Checking out the numbers in the dataset")
             print(self.df)
@@ -74,26 +78,22 @@ class Classifier:
         # robust_scaler = RobustScaler()        # RobustScaler ignores outliers
         self.X = standard_scaler.fit_transform(self.X)
 
-
         # Train-test split
         test_size = 0.3
-        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=test_size, random_state=4)
-
-        #print(X)
+        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=test_size, random_state=4)        #print(X)
         #print(y)
-
 
         log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
         log_reg.fit(self.X, self.y.ravel())
         # log_reg.predict(x)
         log_reg.predict(self.X[:2, :])
         log_reg.predict_proba(self.X[:2, :])
-        print(log_reg.score(self.X, self.y.ravel()))
+        #print(log_reg.score(self.X, self.y.ravel()))
         return self.X, self.y
 
-
-xls_file = "default_credit_card_data.xls"
-obj = Classifier(1,23,4)
-obj.read_credit_card_file(xls_file)
-obj.display_data()
-X,y = obj.fit_data()
+    def accuracy(self,y_actual,y_model): #if decice to change
+        """
+        A function that checks how often the arrays match by checking if
+        every element in each element matches and divide by the number of elements
+        """
+        return np.sum(y_actual==y_model)/len(y_actual)
