@@ -129,11 +129,27 @@ def read_credit_card_file():
 
     from sklearn.linear_model import LogisticRegression
     log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
-    log_reg.fit(X, y.ravel())
-    # log_reg.predict(x)
-    log_reg.predict(X[:2, :])
-    log_reg.predict_proba(X[:2, :]) 
-    print(log_reg.score(X, y.ravel()))
+    log_reg.fit(X_train, y_train.ravel())
+
+    predictions = log_reg.predict(X_test)
+
+    score = log_reg.score(X_test, y_test.ravel())
+    print(score)
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from sklearn import metrics
+    cm = metrics.confusion_matrix(y_test.ravel(), predictions)
+    print(cm)
+
+    plt.figure(figsize=(9,9))
+    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'Blues_r');
+    plt.ylabel('Actual label');
+    plt.xlabel('Predicted label');
+    all_sample_title = 'Accuracy Score: {0}'.format(score)
+    plt.title(all_sample_title, size = 15);
+
+    plt.show()
 
     return X, y
 
