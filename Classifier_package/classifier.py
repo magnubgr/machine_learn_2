@@ -25,8 +25,21 @@ class Classifier:
         self.y_data = y_data
         self.read_data = False
 
+
     def sigmoid(self, t):
         return 1./(np.exp(-t)+1)
+
+
+    ################# Make the probability function which uses the sigmoid to make the "activation" function #################
+    def probability(self, X, beta):
+        return self.sigmoid( np.dot(X, beta) )
+
+
+    def cost(self):
+        pass
+
+    def gradient(self):
+        pass
 
 
     def read_credit_card_file(self, xls_file):
