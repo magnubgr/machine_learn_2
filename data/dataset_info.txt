@@ -24,7 +24,6 @@ X12-X17: Amount of bill statement (NT dollar).
     X17 = amount of bill statement in April, 2005.
 X18-X23: Amount of previous payment (NT dollar).
     X18 = amount paid in September, 2005;
-    X19 = amount paid in August, 2005; . . .;
     X23 = amount paid in April, 2005.
 
 
