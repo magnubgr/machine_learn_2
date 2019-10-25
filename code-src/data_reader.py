@@ -5,6 +5,8 @@ import os
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, RobustScaler #, OneHotEncoder
+from sklearn import metrics
+
 
 ## Also xlrd is needed
 
@@ -136,20 +138,18 @@ def read_credit_card_file():
     score = log_reg.score(X_test, y_test.ravel())
     print(score)
 
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-    from sklearn import metrics
     cm = metrics.confusion_matrix(y_test.ravel(), predictions)
     print(cm)
 
-    plt.figure(figsize=(9,9))
-    sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'Blues_r');
-    plt.ylabel('Actual label');
-    plt.xlabel('Predicted label');
-    all_sample_title = 'Accuracy Score: {0}'.format(score)
-    plt.title(all_sample_title, size = 15);
-
-    plt.show()
+    # import matplotlib.pyplot as plt
+    # import seaborn as sns
+    # plt.figure(figsize=(9,9))
+    # sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'Blues_r');
+    # plt.ylabel('Actual label');
+    # plt.xlabel('Predicted label');
+    # all_sample_title = 'Accuracy Score: {0}'.format(score)
+    # plt.title(all_sample_title, size = 15);
+    # plt.show()
 
     return X, y
 
