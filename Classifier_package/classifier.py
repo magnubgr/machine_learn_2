@@ -24,19 +24,40 @@ class Classifier:
         self.y = y
         self.y_data = y_data
         self.read_data = False
+        self.X = self.get_x()
+
+    def get_x(self):
+        #not working. Copied from regsolver
+        xy_zip = np.array(list(zip(self.x,self.y)))
+        poly = PolynomialFeatures(self.degree)      # using sklearn.preprocessing
+        self.X_ = poly.fit_transform(xy_zip)
+        return self.X_
 
 
     def sigmoid(self, t):
         return 1./(np.exp(-t)+1)
 
-
     ################# Make the probability function which uses the sigmoid to make the "activation" function #################
-    def probability(self, X, beta):
+    def prob(self, X, beta):
         return self.sigmoid( np.dot(X, beta) )
 
+    def cost_function(self, beta, X):
+        #not workin
+        C = y*log(p(y=1)) + (1-y)*log(1-p(y=1))
+        return
 
-    def cost(self):
-        pass
+    def newt_it(self, X, n, gamma, tol=1e-2):
+        #not working
+        old_beta = 1
+        #newtons iterative method
+        for i in range(n):
+            new_beta = old_beta - gamma*(X.T *(prob(X,old_beta)-y_data))
+            if abs(new_beta-old_beta)<tol:
+                break
+
+            old_beta = new_beta
+        self.beta = new_beta
+
 
     def gradient(self):
         pass
