@@ -28,10 +28,9 @@ class Classifier:
 
     def get_x(self):
         #not working. Copied from regsolver
-        xy_zip = np.array(list(zip(self.x,self.y)))
-        poly = PolynomialFeatures(self.degree)      # using sklearn.preprocessing
-        self.X_ = poly.fit_transform(xy_zip)
-        return self.X_
+
+        #poly = PolynomialFeatures(self.degree)      # using sklearn.preprocessing
+        return float('nan')
 
 
     def sigmoid(self, t):
@@ -43,7 +42,7 @@ class Classifier:
 
     def cost_function(self, beta, X):
         #not workin
-        C = y*log(p(y=1)) + (1-y)*log(1-p(y=1))
+        C = y*log(p(y=1)) + (1-y)*log(1-p(y=1)) #taking from book. confused by this
         return
 
     def newt_it(self, X, n, gamma, tol=1e-2):
