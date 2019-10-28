@@ -35,20 +35,22 @@ class Classifier:
 
 
     def sigmoid(self, t):
-        return 1./(np.exp(-t)+1)
+        return 1./(1 + np.exp(-t))
 
     ################# Make the probability function which uses the sigmoid to make the "activation" function #################
     def prob(self, X, beta):
         return self.sigmoid( X @ beta )
 
-    def cost_function(self, beta, X):
-        #not workin
-        C = y*log(p(y=1)) + (1-y)*log(1-p(y=1)) #taking from book. confused by this
-        n = len(self.y_data)
-        for i in range(n):
-            y[i]*np.log(prob(X[i], beta))
-        
-        return
+    def cost_function(self, beta, X, y):
+        ##### With basic for-loop
+        # n = len(self.y_data)
+        # total_loss = 0
+        # for i in range(n):
+        #     total_loss -= y[i]*np.log(prob(X[i], beta)) + (1-y[i])*np.log(1-prob(X[i],beta))
+        ##### With numpy sum
+        total_loss = -np.sum( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
+
+        return total_loss
 
     def newt_it(self, X, n, gamma, tol=1e-2):
         #not working
@@ -129,16 +131,19 @@ class Classifier:
         else:
             raise SyntaxError("need to read the data first" )
 
+    def train_test_split(self, X, y, test_size=0.3, random_state=4):
+        # Train-test split
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
+        return X_train, X_test, y_train, y_test
 
 
     def fit_data(self, X_train, y_train):
-
+        ##### Scikit-Learn Logistic regression #####  
         self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
-        self.log_reg.fit(self.X, self.y.ravel())
-        # log_reg.predict(x)
-        self.log_reg.predict(self.X)
-        #print(log_reg.score(self.X, self.y.ravel()))
-        # return self.X, self.y
+        self.log_reg.fit(self.X, self.y.flatten())
+
+        ##### Our implementation of Logistic regression #####
+
 
     def predict(self, X_test):
         prediction = self.log_reg.predict(X_test)
