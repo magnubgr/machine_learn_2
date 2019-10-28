@@ -67,9 +67,10 @@ class Classifier:
 
     def gradient_descent(self, X, y, learning_rate=0.1, n_iter=1000):
         beta = np.zeros((X.shape[1],1))
+        beta = np.random.rand(X.shape[1],1)
         m = len(y)
         for i in range(n_iter):
-            print("is it here?")
+            print("Damn this takes a lot of time")
             gradients = (1 / m) * np.dot(X.T, self.prob(X, beta) - y.flatten())
             beta = beta - learning_rate*gradients
         return beta
@@ -143,7 +144,7 @@ class Classifier:
         return X_train, X_test, y_train, y_test
 
 
-    def fit_data(self, X_train, y_train):
+    def fit_data(self, X_train, y_train, learning_rate=0.1, n_iter=100):
         ##### Scikit-Learn Logistic regression #####  
         # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
         # self.log_reg.fit(self.X, self.y.flatten())
@@ -153,7 +154,7 @@ class Classifier:
         # X_train = np.c_[np.ones((X_train.shape[0], 1)), X_train]  # Adding intercept
         y_train = y_train[:, np.newaxis]
 
-        self.beta = self.gradient_descent(X_train, y_train, learning_rate=0.1, n_iter=2)
+        self.beta = self.gradient_descent(X_train, y_train, learning_rate=learning_rate, n_iter=n_iter)
         
 
     def predict(self, X_test):
