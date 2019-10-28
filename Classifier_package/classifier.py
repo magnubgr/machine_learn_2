@@ -39,7 +39,7 @@ class Classifier:
 
     ################# Make the probability function which uses the sigmoid to make the "activation" function #################
     def prob(self, X, beta):
-        return self.sigmoid( X @ beta )
+        return self.sigmoid( np.dot(X, beta) )
 
     def cost_function(self, beta, X, y):
         ##### With basic for-loop
@@ -65,8 +65,14 @@ class Classifier:
         self.beta = new_beta
 
 
-    def gradient(self):
-        pass
+    def gradient_descent(self, X, y, learning_rate=0.1, n_iter=1000):
+        beta = np.zeros((X.shape[1],1))
+        m = len(y)
+        for i in range(n_iter):
+            print("is it here?")
+            gradients = (1 / m) * np.dot(X.T, self.prob(X, beta) - y.flatten())
+            beta = beta - learning_rate*gradients
+        return beta
 
 
     def read_credit_card_file(self, xls_file):
@@ -139,14 +145,25 @@ class Classifier:
 
     def fit_data(self, X_train, y_train):
         ##### Scikit-Learn Logistic regression #####  
-        self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
-        self.log_reg.fit(self.X, self.y.flatten())
+        # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
+        # self.log_reg.fit(self.X, self.y.flatten())
 
         ##### Our implementation of Logistic regression #####
+        
+        # X_train = np.c_[np.ones((X_train.shape[0], 1)), X_train]  # Adding intercept
+        y_train = y_train[:, np.newaxis]
 
+        self.beta = self.gradient_descent(X_train, y_train, learning_rate=0.1, n_iter=2)
+        
 
     def predict(self, X_test):
-        prediction = self.log_reg.predict(X_test)
+        ##### Scikit-Learn predict #####  
+        # prediction = self.log_reg.predict(X_test)
+
+        ##### Our implementation of predict #####
+        # X_test = np.c_[np.ones((X_test.shape[0], 1)), X_test] # Add ones to first column
+        prediction = self.prob(X_test, self.beta)
+
         return prediction
 
     def accuracy(self,y_actual,y_model): #if decice to change
