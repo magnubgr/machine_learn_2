@@ -18,19 +18,20 @@ Describe the model and input argument
 
 
 class Classifier:
-    def __init__(self,x,y,y_data):
+    def __init__(self):
+    # def __init__(self,x,y,y_data):
 
-        self.x = x
-        self.y = y
-        self.y_data = y_data
+        # self.x = x
+        # self.y = y
+        # self.y_data = y_data
+        # self.X = self.get_x()
         self.read_data = False
-        self.X = self.get_x()
 
-    def get_x(self):
-        #not working. Copied from regsolver
+    # def get_x(self):
+    #     #not working. Copied from regsolver
 
-        #poly = PolynomialFeatures(self.degree)      # using sklearn.preprocessing
-        return float('nan')
+    #     #poly = PolynomialFeatures(self.degree)      # using sklearn.preprocessing
+    #     return float('nan')
 
 
     def sigmoid(self, t):
@@ -38,11 +39,15 @@ class Classifier:
 
     ################# Make the probability function which uses the sigmoid to make the "activation" function #################
     def prob(self, X, beta):
-        return self.sigmoid( np.dot(X, beta) )
+        return self.sigmoid( X @ beta )
 
     def cost_function(self, beta, X):
         #not workin
         C = y*log(p(y=1)) + (1-y)*log(1-p(y=1)) #taking from book. confused by this
+        n = len(self.y_data)
+        for i in range(n):
+            y[i]*np.log(prob(X[i], beta))
+        
         return
 
     def newt_it(self, X, n, gamma, tol=1e-2):
@@ -79,17 +84,41 @@ class Classifier:
 
         ## Drop rows that are outside of features given
         self.df = self.df[(self.df.EDUCATION != 0) &
-                (self.df.EDUCATION != 5) &
-                (self.df.EDUCATION != 6)]
+                          (self.df.EDUCATION != 5) &
+                          (self.df.EDUCATION != 6)]
         self.df = self.df[ (self.df.MARRIAGE != 0) ]
 
-        for self.dfpay in [self.df.PAY_0, self.df.PAY_2, self.df.PAY_3, self.df.PAY_4, self.df.PAY_5, self.df.PAY_6]:
-            self.df = self.df[(self.dfpay != -2) ]
-        # &(dfpay != 0)]
+        for dfpay in [self.df.PAY_0, self.df.PAY_2, self.df.PAY_3, self.df.PAY_4, self.df.PAY_5, self.df.PAY_6]:
+            self.df = self.df[(dfpay != -2) ]
+                        # &(dfpay != 0)]
+
         # One-hot encoding the gender
+        self.df["MALE"] = (self.df["SEX"]==1).astype("int")
+        self.df.drop("SEX", axis=1, inplace=True)
+
+        # One-hot encoding for education
+        self.df["GRADUATE_SCHOOL"] = (self.df["EDUCATION"]==1).astype("int")
+        self.df["UNIVERSITY"] = (self.df["EDUCATION"]==2).astype("int")
+        self.df["HIGH_SCHOOL"] = (self.df["EDUCATION"]==3).astype("int")
+        self.df.drop("EDUCATION", axis=1, inplace=True)
+
+        # One-hot encoding for marriage
+        self.df["MARRIED"] = (self.df["MARRIAGE"]==1).astype("int")
+        self.df["SINGLE"] = (self.df["MARRIAGE"]==2).astype("int")
+        self.df.drop("MARRIAGE", axis=1, inplace=True)
+
+        self.X = self.df.loc[:, self.df.columns != 'DEFAULT'].values
+        self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
+
+        ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
+        standard_scaler = StandardScaler()
+        # robust_scaler = RobustScaler()        # RobustScaler ignores outliers
+        self.X = standard_scaler.fit_transform(self.X)
+
+        return self.X, self.y
 
 
-    def display_data(self,):
+    def display_data(self):
         """
         prints the df to display the data
         Checks that you have read the data
@@ -102,27 +131,18 @@ class Classifier:
 
 
 
-    def fit_data(self,):
-        self.X = self.df.loc[:, self.df.columns != 'DEFAULT'].values
-        self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
+    def fit_data(self, X_train, y_train):
 
-        ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
-        standard_scaler = StandardScaler()
-        # robust_scaler = RobustScaler()        # RobustScaler ignores outliers
-        self.X = standard_scaler.fit_transform(self.X)
-
-        # Train-test split
-        test_size = 0.3
-        X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, test_size=test_size, random_state=4)        #print(X)
-        #print(y)
-
-        log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
-        log_reg.fit(self.X, self.y.ravel())
+        self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
+        self.log_reg.fit(self.X, self.y.ravel())
         # log_reg.predict(x)
-        log_reg.predict(self.X[:2, :])
-        log_reg.predict_proba(self.X[:2, :])
+        self.log_reg.predict(self.X)
         #print(log_reg.score(self.X, self.y.ravel()))
-        return self.X, self.y
+        # return self.X, self.y
+
+    def predict(self, X_test):
+        prediction = self.log_reg.predict(X_test)
+        return prediction
 
     def accuracy(self,y_actual,y_model): #if decice to change
         """
