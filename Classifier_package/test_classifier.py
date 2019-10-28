@@ -7,7 +7,7 @@ class Regsolver_test(unittest.TestCase):
     This class is a testfunction for Regsolver.
     """
     def test_canary(self):
-        "testing that the simplest case works"
+        """testing that the simplest case works."""
         self.assertEqual(2, 2)
 
     def test_sigmoid(self):
