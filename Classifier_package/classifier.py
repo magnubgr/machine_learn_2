@@ -31,7 +31,6 @@ class Classifier:
     def sigmoid(self, t):
         return 1./(1 + np.exp(-t))
 
-    ################# Make the probability function which uses the sigmoid to make the "activation" function #################
     def prob(self, X, beta):
         return self.sigmoid( np.dot(X, beta) )
 
@@ -52,7 +51,7 @@ class Classifier:
             old_beta = new_beta
         self.beta = new_beta
 
-    def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100, tol=1e-2):
+    def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100, tol=1e-2, plot_it=True):
         np.random.seed(12)
         beta_new = np.random.rand(X.shape[1],1)
         m = len(y)
@@ -67,10 +66,7 @@ class Classifier:
                 print("below tolerance")
                 break
 
-        #plt.plot(cost_arr)
-        #plt.show()
-
-        return beta_new
+        return beta_new, cost_arr
 
 
     def read_credit_card_file(self, xls_file):
@@ -117,10 +113,10 @@ class Classifier:
         self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
         ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
         ################## THIS IS WRONG. DONT SCALE 0 and 1 #############################################
-        # standard_scaler = StandardScaler()
-        # self.X = standard_scaler.fit_transform(self.X)
-        robust_scaler = RobustScaler()        # RobustScaler ignores outliers
-        self.X = robust_scaler.fit_transform(self.X)
+        standard_scaler = StandardScaler()
+        self.X = standard_scaler.fit_transform(self.X)
+        # robust_scaler = RobustScaler()        # RobustScaler ignores outliers
+        # self.X = robust_scaler.fit_transform(self.X)
 
         return self.X, self.y
 
@@ -136,30 +132,28 @@ class Classifier:
             raise SyntaxError("need to read the data first" )
 
     def train_test_split(self, X, y, test_size=0.3, random_state=4):
-        # Train-test split
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
 
     def fit_data(self, X_train, y_train, learning_rate=0.1, n_iter=100, tol=1e-2):
         ##### Scikit-Learn Logistic regression #####
-        # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
-        # self.log_reg.fit(self.X, self.y.flatten())
+            # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
+            # self.log_reg.fit(self.X, self.y.flatten())
 
         ##### Our implementation of Logistic regression #####
 
         # X_train = np.c_[np.ones((X_train.shape[0], 1)), X_train]  # Adding intercept
         y_train = y_train[:, np.newaxis]
-        self.beta = self.gradient_descent(X_train, y_train, learning_rate=learning_rate, n_iter=n_iter, tol=tol)
-
+        self.beta, cost_arr = self.gradient_descent(X_train, y_train, learning_rate=learning_rate, n_iter=n_iter, tol=tol)
+        return self.beta, cost_arr
 
     def predict(self, X_test):
         ##### Scikit-Learn predict #####
-        # prediction = self.log_reg.predict(X_test)
+            # prediction = self.log_reg.predict(X_test)
 
         ##### Our implementation of predict #####
         # X_test = np.c_[np.ones((X_test.shape[0], 1)), X_test] # Add ones to first column
         prediction = self.prob(X_test, self.beta)
-        # print("prediction", (prediction>=0.5))
 
         return (prediction>=0.5)
 
