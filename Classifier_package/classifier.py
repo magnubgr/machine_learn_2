@@ -52,7 +52,7 @@ class Classifier:
             old_beta = new_beta
         self.beta = new_beta
 
-    def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100, tol=1e-2):
+    def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100, tol=1e-10):
         np.random.seed(12)
         beta_new = np.random.rand(X.shape[1],1)
         m = len(y)
@@ -64,7 +64,7 @@ class Classifier:
             gradients = (1/m) * np.dot(X.T, (self.prob(X, beta_old) - y.reshape(-1,1)))
             beta_new = beta_old - learning_rate * gradients
             if abs(np.sum(beta_new-beta_old))<tol:
-                print("below tolerance")
+                print("below tolerance: ", tol)
                 break
 
         #plt.plot(cost_arr)
@@ -140,7 +140,7 @@ class Classifier:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
 
-    def fit_data(self, X_train, y_train, learning_rate=0.1, n_iter=100, tol=1e-2):
+    def fit_data(self, X_train, y_train, learning_rate=0.1, n_iter=100, tol=1e-10):
         ##### Scikit-Learn Logistic regression #####
         # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
         # self.log_reg.fit(self.X, self.y.flatten())
