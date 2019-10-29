@@ -178,4 +178,6 @@ class Classifier:
         A function that checks how often the arrays match by checking if
         every element in each element matches and divide by the number of elements
         """
+        if len(y_actual) != len(y_model):
+            raise ValueError("the dimension of your two arrays doesn't match")
         return np.sum(y_actual==y_model)/len(y_actual)

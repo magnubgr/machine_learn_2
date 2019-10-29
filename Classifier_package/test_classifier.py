@@ -25,6 +25,8 @@ class Regsolver_test(unittest.TestCase):
         obj = Classifier()
         y_actual = np.array([1,1,0,0])
         y_model = np.array([1,1,1,0])
+        with self.assertRaises(ValueError):
+            obj.accuracy(y_actual, np.array([1,2,2]))
         self.assertEqual(obj.accuracy(y_actual,y_model),0.75)
         self.assertEqual(obj.accuracy(y_actual,y_actual),1)
 
