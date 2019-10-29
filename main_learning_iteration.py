@@ -28,7 +28,7 @@ accuracy_score = np.zeros((len(learning_rate),len(n_iterations)))
 for i in range(n):
     if 100*i%n == 0:
         print(int(100*i/n), "%")
-    for j in range(n):
+    for j in range(len(n_iterations)):
         clf.fit_data(X_train, y_train,
         learning_rate=learning_rate[i], n_iter=n_iterations[j])
         pred = clf.predict(X_test)
@@ -37,6 +37,7 @@ for i in range(n):
 
 import seaborn as sb
 plt.plot(learning_rate,accuracy_score[:,int(len(n_iterations)/2)])
+print(int(len(n_iterations)/2))
 plt.title('accuracy score as a function of learning rate')
 plt.xlabel('learning rate')
 plt.ylabel('accuracy score')
