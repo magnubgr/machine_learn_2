@@ -23,17 +23,17 @@ X, y = clf.read_credit_card_file(xls_file)
 print (len(y))
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.3, random_state=4)
 #clf.display_data()
-clf.fit_data(X_train, y_train, n_iter=10)
+clf.fit_data(X_train, y_train, learning_rate=0.1, n_iter=10)
 pred = clf.predict(X_test)
 accuracy_score = clf.accuracy(pred, y_test.flatten())
 print(f"accuracy_score: {accuracy_score}")
 
-beta = np.zeros((X.shape[1], 1))
-prob = clf.prob(X, beta)
-print(f"prob: {prob}")
+# beta = np.zeros((X.shape[1], 1))
+# prob = clf.prob(X, beta)
+# print(f"prob: {prob}")
 
-total_loss= clf.cost_function(beta , X, y)
-print(f"total_loss: {total_loss}")
+# total_loss= clf.cost_function(beta , X, y)
+# print(f"total_loss: {total_loss}")
 
 
 # xls_file = "default_credit_card_data.xls"

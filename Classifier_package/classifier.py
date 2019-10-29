@@ -64,17 +64,25 @@ class Classifier:
         tol = 1e-2
         m = len(y)
         for i in range(n_iter):
-            beta_old= beta_new
-            print(100*i/n_iter)
-            time1 = time.time()
-            #print('X', np.shape(X),'Beta', np.shape(beta_old),'y',np.shape(y.ravel()))
-            gradients =  np.dot(X.T, (self.prob(X, beta_old) - y.ravel()))
-            time2 = time.time()
+            beta_old = beta_new
+            print(i,"/",n_iter)
+            # time1 = time.time()
+            # print("beta: ",np.shape(beta_old))
+            # print("dot(X,beta): ",np.shape(np.dot(X,beta_old).ravel()))
+            # print("X: ",np.shape(X))
+            # print("X.T: ",np.shape(X.T))
+            # print("p(X,beta): ",np.shape(self.prob(X, beta_old)))
+            # print("y: ",np.shape(y))
+            # print("y.ravel(): ",np.shape(y.reshape(-1,1)))
+
+
+            gradients =  np.dot(X.T, (self.prob(X, beta_old) - y.reshape(-1,1)))
+            # time2 = time.time()
             beta_new = beta_old - learning_rate*gradients
-            time3 = time.time()
-            print("time2-1  =",time2-time1)
-            print("time3-2  =",time3-time2)
-            print("time3-1  =",time3-time1)
+            # time3 = time.time()
+            # print("time2-1  =",time2-time1)
+            # print("time3-2  =",time3-time2)
+            # print("time3-1  =",time3-time1)
             if abs(np.sum(beta_new-beta_old))<tol:
                 break
 
@@ -125,9 +133,10 @@ class Classifier:
         self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
 
         ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
-        standard_scaler = StandardScaler()
+        ################## THIS IS WRONG. DONT SCALE 0 and 1 #############################################
+        # standard_scaler = StandardScaler()
         # robust_scaler = RobustScaler()        # RobustScaler ignores outliers
-        self.X = standard_scaler.fit_transform(self.X)
+        # self.X = standard_scaler.fit_transform(self.X)
 
         return self.X, self.y
 
@@ -155,11 +164,11 @@ class Classifier:
         ##### Our implementation of Logistic regression #####
 
         # X_train = np.c_[np.ones((X_train.shape[0], 1)), X_train]  # Adding intercept
-        print(np.shape(y_train))
-        print(y_train)
+        # print(np.shape(y_train))
+        # print(y_train)
         y_train = y_train[:, np.newaxis]
-        print(np.shape(y_train))
-        print(y_train)
+        # print(np.shape(y_train))
+        # print(y_train)
         self.beta = self.gradient_descent(X_train, y_train, learning_rate=learning_rate, n_iter=n_iter)
 
 
@@ -178,4 +187,4 @@ class Classifier:
         A function that checks how often the arrays match by checking if
         every element in each element matches and divide by the number of elements
         """
-        return np.sum(y_actual==y_model)/len(y_actual)
+        return np.sum(y_actual.ravel()==y_model)/len(y_actual.ravel())
