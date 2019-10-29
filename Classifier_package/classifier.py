@@ -60,12 +60,12 @@ class Classifier:
 
     def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100):
         beta_new = np.zeros((X.shape[1],1))
-        beta_new = np.random.rand(X.shape[1],1)
-        tol = 1e-2
+        #beta_new = np.random.rand(X.shape[1],1)
+        tol = 1
         m = len(y)
         for i in range(n_iter):
             beta_old = beta_new
-            print(i,"/",n_iter)
+            #print(i,"/",n_iter)
             # time1 = time.time()
             # print("beta: ",np.shape(beta_old))
             # print("dot(X,beta): ",np.shape(np.dot(X,beta_old).ravel()))
@@ -84,6 +84,7 @@ class Classifier:
             # print("time3-2  =",time3-time2)
             # print("time3-1  =",time3-time1)
             if abs(np.sum(beta_new-beta_old))<tol:
+                print("below tolerance")
                 break
 
         return beta_new
