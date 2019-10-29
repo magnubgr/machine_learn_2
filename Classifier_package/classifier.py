@@ -119,15 +119,12 @@ class Classifier:
 
         self.X = self.df.loc[:, self.df.columns != 'DEFAULT'].values
         self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
-
-        print(self.X)
         ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
         ################## THIS IS WRONG. DONT SCALE 0 and 1 #############################################
         # standard_scaler = StandardScaler()
         # self.X = standard_scaler.fit_transform(self.X)
         robust_scaler = RobustScaler()        # RobustScaler ignores outliers
         self.X = robust_scaler.fit_transform(self.X)
-        print(self.X)
 
         return self.X, self.y
 
