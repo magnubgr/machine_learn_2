@@ -39,18 +39,6 @@ class Classifier:
         total_loss = -np.mean( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
         return total_loss
 
-    def newt_it(self, X, n, gamma, tol=1e-2):
-        #not working
-        old_beta = 1
-        #newtons iterative method
-        for i in range(n):
-            new_beta = old_beta - gamma*(X.T *(prob(X,old_beta)-y_data))
-            if abs(new_beta-old_beta)<tol:
-                break
-
-            old_beta = new_beta
-        self.beta = new_beta
-
     def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100, tol=1e-2, plot_it=True):
         np.random.seed(12)
         beta_new = np.random.rand(X.shape[1],1)
