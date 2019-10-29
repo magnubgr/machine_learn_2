@@ -78,9 +78,9 @@ class Classifier:
             if abs(np.sum(beta_new-beta_old))<tol:
                 print("below tolerance")
                 break
-        
-        plt.plot(cost_arr)
-        plt.show()
+
+        #plt.plot(cost_arr)
+        #plt.show()
 
         return beta_new
 
@@ -127,10 +127,6 @@ class Classifier:
 
         self.X = self.df.loc[:, self.df.columns != 'DEFAULT'].values
         self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
-<<<<<<< HEAD
-=======
-
->>>>>>> 66a2fe097b6b6cd2190fe11e75304d52cec291b1
         ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
         ################## THIS IS WRONG. DONT SCALE 0 and 1 #############################################
         # standard_scaler = StandardScaler()

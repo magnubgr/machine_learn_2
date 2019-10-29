@@ -19,34 +19,30 @@ clf = Classifier()
 X, y = clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.3, random_state=4)
 #clf.display_data()
-n = 200
-learning_rate = np.linspace(0,10,n)
-accuracy_score = np.zeros_like(learning_rate)
-for i in range(len(learning_rate)):
+n = 10
+learning_rate = np.linspace(0,1,n)
+n_iterations = np.linspace(100,200,n, dtype=int)
+accuracy_score = np.zeros((n,n))
+for i in range(n):
     if 100*i%n == 0:
         print(int(100*i/n), "%")
-    clf.fit_data(X_train, y_train, learning_rate=learning_rate[i], n_iter=200)
-    pred = clf.predict(X_test)
-    accuracy = clf.accuracy(pred, y_test.flatten())
-    print(f"accuracy_score: {accuracy}")
-    accuracy_score[i] =accuracy
+    for j in range(n):
+        clf.fit_data(X_train, y_train,
+        learning_rate=learning_rate[i], n_iter=n_iterations[j])
+        pred = clf.predict(X_test)
+        accuracy = clf.accuracy(pred, y_test.flatten())
+        accuracy_score[i,j] =accuracy
 
-plt.plot(learning_rate,accuracy_score)
+import seaborn as sb
+plt.plot(learning_rate,accuracy_score[:,0])
 plt.title('accuracy score as a function of learning rate')
 plt.xlabel('learning rate')
 plt.ylabel('accuracy score')
 plt.show()
 
-# beta = np.zeros((X.shape[1], 1))
-# prob = clf.prob(X, beta)
-# print(f"prob: {prob}")
-
-# total_loss= clf.cost_function(beta , X, y)
-# print(f"total_loss: {total_loss}")
-
-
-# xls_file = "default_credit_card_data.xls"
-# obj = Classifier(1,23,4)
-# obj.read_credit_card_file(xls_file)
-# obj.display_data()
-# X,y = obj.fit_data()
+heat_map = sb.heatmap(accuracy_score, xticklabels=learning_rate, yticklabels=n_iterations,  cmap="viridis")
+heat_map.set_yticklabels(heat_map.get_yticklabels(), rotation=0)
+plt.title(r"Heatmap of accuracy_score for different learning_rate and iterations", size=20)
+plt.xlabel(r"learning_rate $\gamma $ ", size=18)
+plt.ylabel(r"n_iterations ", size=18)
+plt.show()
