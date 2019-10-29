@@ -6,6 +6,7 @@ from sklearn.model_selection import  train_test_split
 from sklearn.linear_model import LogisticRegression
 from functools import partial
 import sys
+import time
 
 import pandas as pd
 import sklearn
@@ -26,13 +27,6 @@ class Classifier:
         # self.y_data = y_data
         # self.X = self.get_x()
         self.read_data = False
-
-    # def get_x(self):
-    #     #not working. Copied from regsolver
-
-    #     #poly = PolynomialFeatures(self.degree)      # using sklearn.preprocessing
-    #     return float('nan')
-
 
     def sigmoid(self, t):
         return 1./(1 + np.exp(-t))
@@ -64,16 +58,27 @@ class Classifier:
             old_beta = new_beta
         self.beta = new_beta
 
-
-    def gradient_descent(self, X, y, learning_rate=0.1, n_iter=1000):
-        beta = np.zeros((X.shape[1],1))
-        beta = np.random.rand(X.shape[1],1)
+    def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100):
+        beta_new = np.zeros((X.shape[1],1))
+        beta_new = np.random.rand(X.shape[1],1)
+        tol = 1e-2
         m = len(y)
         for i in range(n_iter):
-            print("Damn this takes a lot of time")
-            gradients = (1 / m) * np.dot(X.T, self.prob(X, beta) - y.flatten())
-            beta = beta - learning_rate*gradients
-        return beta
+            beta_old= beta_new
+            print(100*i/n_iter)
+            time1 = time.time()
+            #print('X', np.shape(X),'Beta', np.shape(beta_old),'y',np.shape(y.ravel()))
+            gradients =  np.dot(X.T, (self.prob(X, beta_old) - y.ravel()))
+            time2 = time.time()
+            beta_new = beta_old - learning_rate*gradients
+            time3 = time.time()
+            print("time2-1  =",time2-time1)
+            print("time3-2  =",time3-time2)
+            print("time3-1  =",time3-time1)
+            if abs(np.sum(beta_new-beta_old))<tol:
+                break
+
+        return beta_new
 
 
     def read_credit_card_file(self, xls_file):
@@ -126,7 +131,6 @@ class Classifier:
 
         return self.X, self.y
 
-
     def display_data(self):
         """
         prints the df to display the data
@@ -143,7 +147,6 @@ class Classifier:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
 
-
     def fit_data(self, X_train, y_train, learning_rate=0.1, n_iter=100):
         ##### Scikit-Learn Logistic regression #####
         # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
@@ -152,8 +155,11 @@ class Classifier:
         ##### Our implementation of Logistic regression #####
 
         # X_train = np.c_[np.ones((X_train.shape[0], 1)), X_train]  # Adding intercept
+        print(np.shape(y_train))
+        print(y_train)
         y_train = y_train[:, np.newaxis]
-
+        print(np.shape(y_train))
+        print(y_train)
         self.beta = self.gradient_descent(X_train, y_train, learning_rate=learning_rate, n_iter=n_iter)
 
 

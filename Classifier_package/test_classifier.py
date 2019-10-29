@@ -31,7 +31,7 @@ class Regsolver_test(unittest.TestCase):
     def test_display_data(self):
         """
         Test for display_data, that checks that it raises an exception, when
-        trying to display the data without having read any data
+        trying to display the data without having read any data.
         """
         obj = Classifier()
         with self.assertRaises(SyntaxError):
