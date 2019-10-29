@@ -42,6 +42,10 @@ class Classifier:
         # for i in range(n):
         #     total_loss -= y[i]*np.log(prob(X[i], beta)) + (1-y[i])*np.log(1-prob(X[i],beta))
         ##### With numpy sum
+        # print("beta:",np.shape(beta))
+        # print("X:",np.shape(X))
+        y = y.reshape(-1,1)
+        # print("y:",np.shape(y))
         total_loss = -np.sum( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
 
         return total_loss
@@ -60,19 +64,23 @@ class Classifier:
 
     def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100):
         # beta_new = np.zeros((X.shape[1],1))
-        np.seed(12)
+        np.random.seed(12)
         beta_new = np.random.rand(X.shape[1],1)
-        tol = 1e-1
+        tol = 1e-3
         # m = len(y)
+        cost_arr = []
         for i in range(n_iter):
             # print(i,"/",n_iter)
             beta_old = beta_new
             gradients =  np.dot(X.T, (self.prob(X, beta_old) - y.reshape(-1,1)))
+            cost_arr.append(self.cost_function(beta_new, X, y))
             beta_new = beta_old - learning_rate*gradients
-
             if abs(np.sum(beta_new-beta_old))<tol:
                 print("below tolerance")
                 break
+        
+        plt.plot(cost_arr)
+        plt.show()
 
         return beta_new
 
@@ -119,6 +127,10 @@ class Classifier:
 
         self.X = self.df.loc[:, self.df.columns != 'DEFAULT'].values
         self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
+<<<<<<< HEAD
+=======
+
+>>>>>>> 66a2fe097b6b6cd2190fe11e75304d52cec291b1
         ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
         ################## THIS IS WRONG. DONT SCALE 0 and 1 #############################################
         # standard_scaler = StandardScaler()
