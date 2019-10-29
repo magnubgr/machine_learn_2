@@ -36,18 +36,8 @@ class Classifier:
         return self.sigmoid( np.dot(X, beta) )
 
     def cost_function(self, beta, X, y):
-        ##### With basic for-loop
-        # n = len(self.y_data)
-        # total_loss = 0
-        # for i in range(n):
-        #     total_loss -= y[i]*np.log(prob(X[i], beta)) + (1-y[i])*np.log(1-prob(X[i],beta))
-        ##### With numpy sum
-        # print("beta:",np.shape(beta))
-        # print("X:",np.shape(X))
         y = y.reshape(-1,1)
-        # print("y:",np.shape(y))
         total_loss = -np.mean( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
-
         return total_loss
 
     def newt_it(self, X, n, gamma, tol=1e-2):
@@ -63,23 +53,21 @@ class Classifier:
         self.beta = new_beta
 
     def gradient_descent(self, X, y, learning_rate=0.2, n_iter=100, tol=1e-2):
-        # beta_new = np.zeros((X.shape[1],1))
         np.random.seed(12)
         beta_new = np.random.rand(X.shape[1],1)
         m = len(y)
         cost_arr = []
         for i in range(n_iter):
             # print(i,"/",n_iter)
+            cost_arr.append(self.cost_function(beta_new, X, y))
             beta_old = beta_new
             gradients = (1/m) * np.dot(X.T, (self.prob(X, beta_old) - y.reshape(-1,1)))
-            # cost_arr.append(self.cost_function(beta_new, X, y))
-            beta_new = beta_old - learning_rate*gradients
+            beta_new = beta_old - learning_rate * gradients
             if abs(np.sum(beta_new-beta_old))<tol:
                 print("below tolerance")
                 break
-        # print(cost_arr)
-        # plt.plot(cost_arr)
-        # plt.show()
+        plt.plot(cost_arr)
+        plt.show()
         return beta_new
 
 
