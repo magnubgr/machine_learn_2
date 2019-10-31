@@ -9,27 +9,44 @@ import os
 
 
 class NeuralNet:
-    def __init__(self, x, ):
+    def __init__(self,):
         self.read_data = False
 
 
-    
 
-    def sigmoid(self):
-        pass
+    def sigmoid(self,t):
+        return 1./(1+ np.exp(-t))
 
     def cost(self):
         pass
 
-    def feed_forward(self): 
-        pass 
+    def feed_forward(self):
+        pass
 
     def backward_propagation(self):
         pass
 
-    def accuracy(self):
-        pass
+    def accuracy(self,y_actual,y_model):
+        """
+        A function that checks how often the arrays match by checking if
+        every element in each element matches and divide by the number of elements
+        """
+        y_actual = y_actual.ravel()
+        y_model = y_model.ravel()
+        if len(y_actual) != len(y_model):
+            raise ValueError("the dimension of your two arrays doesn't match")
+        return np.sum(y_actual==y_model)/len(y_actual)
 
+    def display_data(self):
+        """
+        prints the df to display the data
+        Checks that you have read the data
+        """
+        if (self.read_data==True):
+            print ("Checking out the numbers in the dataset")
+            print(self.df)
+        else:
+            raise SyntaxError("need to read the data first" )
 
 
 
