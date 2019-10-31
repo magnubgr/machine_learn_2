@@ -9,8 +9,27 @@ import os
 
 
 class NeuralNet:
-    def __init__(self):
+    def __init__(self, x, ):
         self.read_data = False
+
+
+    
+
+    def sigmoid(self):
+        pass
+
+    def cost(self):
+        pass
+
+    def feed_forward(self): 
+        pass 
+
+    def backward_propagation(self):
+        pass
+
+    def accuracy(self):
+        pass
+
 
 
 
