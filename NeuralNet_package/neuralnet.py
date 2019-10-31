@@ -9,17 +9,44 @@ import os
 
 
 class NeuralNet:
-    def __init__(self, x, ):
+    def __init__(self,
+            X_data,
+            Y_data,
+            n_hidden_neurons=50,
+            n_categories=10,
+            epochs=10,
+            batch_size=100,
+            eta=0.1,
+            lmbd=0.0):
         self.read_data = False
 
+
+        # building our neural network
+
+        n_inputs, n_features = X_data.shape
+        n_hidden_neurons = 50
+        n_categories = 10
+
+        # we make the weights normally distributed using numpy.random.randn
+
+        # weights and bias in the hidden layer
+        hidden_weights = np.random.randn(n_features, n_hidden_neurons)
+        hidden_bias = np.zeros(n_hidden_neurons) + 0.01
+
+        # weights and bias in the output layer
+        output_weights = np.random.randn(n_hidden_neurons, n_categories)
+        output_bias = np.zeros(n_categories) + 0.01
 
     
 
     def sigmoid(self):
         pass
 
-    def cost(self):
-        pass
+    def cost(self, beta, X, y):
+        ## Using the cross-entropy cost function
+        # y = y.reshape(-1,1) # Test if needed
+        total_loss = -np.mean( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
+        return total_loss
 
     def feed_forward(self): 
         pass 
