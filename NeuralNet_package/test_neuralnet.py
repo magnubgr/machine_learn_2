@@ -1,4 +1,4 @@
-from NeuralNet.neuralnet import NeuralNet
+from NeuralNet_package.neuralnet import NeuralNet
 import numpy as np
 import unittest
 
