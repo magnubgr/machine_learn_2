@@ -61,7 +61,7 @@ class Classifier:
         #extract the data
         self.read_data = True
         path = os.path.dirname(os.path.realpath(__file__))
-        file = path + "/../data/"+ xls_file # fix this pointer
+        file = path + "/../data/"+ xls_file
 
         # df = pd.read_excel(file, header=[0, 1], sheetname="Data")
         self.df = pd.read_excel(file, header=1, skiprows=0, index_col=0)
@@ -123,16 +123,15 @@ class Classifier:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
 
-    def fit_data(self, X_train, y_train, learning_rate=0.1, n_iter=100, tol=1e-10):
+    def fit_data(self, X_train, y_train, learning_rate=0.1, n_iter=100):
         ##### Scikit-Learn Logistic regression #####
             # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
             # self.log_reg.fit(self.X, self.y.flatten())
 
         ##### Our implementation of Logistic regression #####
 
-        # X_train = np.c_[np.ones((X_train.shape[0], 1)), X_train]  # Adding intercept
         y_train = y_train[:, np.newaxis]
-        self.beta, cost_arr = self.gradient_descent(X_train, y_train, learning_rate=learning_rate, n_iter=n_iter, tol=tol)
+        self.beta, cost_arr = self.gradient_descent(X_train, y_train, learning_rate=learning_rate, n_iter=n_iter,)
         return self.beta, cost_arr
 
     def predict(self, X_test):

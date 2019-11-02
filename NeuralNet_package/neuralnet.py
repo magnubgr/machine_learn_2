@@ -20,7 +20,6 @@ class NeuralNet:
             lmbd=0.0):
         self.read_data = False
 
-
         # building our neural network
 
         n_inputs, n_features = X_data.shape
@@ -37,7 +36,7 @@ class NeuralNet:
         output_weights = np.random.randn(n_hidden_neurons, n_categories)
         output_bias = np.zeros(n_categories) + 0.01
 
-    
+
 
     def sigmoid(self,t):
         return 1./(1+ np.exp(-t))
@@ -67,8 +66,8 @@ class NeuralNet:
 
     def display_data(self):
         """
-        prints the df to display the data
-        Checks that you have read the data
+        prints the df to display the data.
+        Checks that you have read the data.
         """
         if (self.read_data==True):
             print ("Checking out the numbers in the dataset")
