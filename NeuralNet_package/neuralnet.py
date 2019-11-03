@@ -9,33 +9,20 @@ import os
 
 
 class NeuralNet:
-    def __init__(self,
-            X_data,
-            Y_data,
-            n_hidden_neurons=50,
-            n_categories=10,
-            epochs=10,
-            batch_size=100,
-            eta=0.1,
-            lmbd=0.0):
+    def __init__(self):  #n_categories=10,
+
         self.read_data = False
 
-        # building our neural network
 
-        n_inputs, n_features = X_data.shape
-        n_hidden_neurons = 50
-        n_categories = 10
+    def initialize_weights(self, X, y, n_hidden_neurons):
+        n_inputs, n_features = X.shape
+        n_outputs = len(np.unique(y))-1
 
-        # we make the weights normally distributed using numpy.random.randn
+        self.hidden_weights = np.random.randn(n_features, n_hidden_neurons)
+        self.hidden_bias = np.zeros(n_hidden_neurons) + 0.01
 
-        # weights and bias in the hidden layer
-        hidden_weights = np.random.randn(n_features, n_hidden_neurons)
-        hidden_bias = np.zeros(n_hidden_neurons) + 0.01
-
-        # weights and bias in the output layer
-        output_weights = np.random.randn(n_hidden_neurons, n_categories)
-        output_bias = np.zeros(n_categories) + 0.01
-
+        self.output_weights = np.random.randn(n_hidden_neurons, n_outputs)
+        self.output_bias = np.zeros(n_outputs) + 0.01
 
 
     def sigmoid(self,t):
@@ -47,18 +34,59 @@ class NeuralNet:
         total_loss = -np.mean( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
         return total_loss
 
-    def feed_forward(self):
-        a = np.zeros(self._hidden_layers + 2, dtype = np.ndarray)
-        z = np.zeros(self._hidden_layers + 2, dtype = np.ndarray)
-        a[0] = X
-        z[0] = 0
-        for i in range(self._hidden_layers +1):
-            z[i+1] = a[i] @ self._weights[i] + self._bias[i]
-            a[i+1] = self._act_functions[i](z[i+1])
-        return z, a
+    def fit(self, X_train, y_train):
+        eta = 0.01
+        lmbd = 0.01
+        for i in range(1000):
+            # calculate gradients
+            dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
 
-    def backward_propagation(self):
-        pass
+            # regularization term gradients
+            dWo += lmbd * self.output_weights
+            dWh += lmbd * self.hidden_weights
+
+            # update weights and biases
+            self.output_weights -= eta * dWo
+            self.output_bias -= eta * dBo
+            self.hidden_weights -= eta * dWh
+            self.hidden_bias -= eta * dBh
+
+
+    def feed_forward(self, X):
+        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
+        a_h = self.sigmoid(z_h)
+
+        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
+
+        ## Softmax activation:
+            # exp_term = np.exp(z_o)
+            # probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
+
+        ## Sigmoid activation
+        probabilities = self.sigmoid(z_o)
+
+        return a_h, probabilities
+
+    def backpropagation(self, X, y):
+        a_h, probabilities = self.feed_forward(X)
+        print(f"accuracy: {self.accuracy(probabilities>0.5, y)}")
+
+        # error in the output layer
+        error_output = probabilities - y
+        # error in the hidden layer
+        error_hidden = np.matmul(error_output, self.output_weights.T) * a_h * (1 - a_h)
+
+        # gradients for the output layer
+        output_weights_gradient = np.matmul(a_h.T, error_output)
+        output_bias_gradient = np.sum(error_output, axis=0)
+
+        # gradient for the hidden layer
+        hidden_weights_gradient = np.matmul(X.T, error_hidden)
+        hidden_bias_gradient = np.sum(error_hidden, axis=0)
+
+        return output_weights_gradient, output_bias_gradient, hidden_weights_gradient, hidden_bias_gradient
+
+
 
     def accuracy(self,y_actual,y_model):
         """
@@ -105,7 +133,9 @@ class NeuralNet:
                           (self.df.EDUCATION != 6)]
         self.df = self.df[ (self.df.MARRIAGE != 0) ]
 
-        for dfpay in [self.df.PAY_0, self.df.PAY_2, self.df.PAY_3, self.df.PAY_4, self.df.PAY_5, self.df.PAY_6]:
+        for dfpay in [self.df.PAY_0, self.df.PAY_2,
+                    self.df.PAY_3, self.df.PAY_4,
+                    self.df.PAY_5, self.df.PAY_6]:
             self.df = self.df[(dfpay != -2) ]
                         # &(dfpay != 0)]
 

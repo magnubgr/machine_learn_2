@@ -17,16 +17,17 @@ X_train, X_test, y_train, y_test = clf.train_test_split(X, y,
                                    test_size=0.3, random_state=4)
 
 reg = sklearn.neural_network.MLPClassifier(
-hidden_layer_sizes = (100,1000),
-learning_rate = "adaptive",
-learning_rate_init = 0.001,
-max_iter = 1000,
-tol = 1e-7,
-verbose = True,
-)
+                            hidden_layer_sizes = (50, 50),
+                            learning_rate = "adaptive",
+                            learning_rate_init = 0.001,
+                            max_iter = 1000,
+                            tol = 1e-25,
+                            verbose = True,
+                            )
 
-reg = reg.fit(X_train, y_train)
+reg = reg.fit(X_train, y_train.ravel())
 
-predict = reg.fit(X_train,y_train)
-print(predict)
-print(f" \n accuracy ={reg.score(X_test,y_test)}")
+predict = reg.predict(X_test)
+# print(np.shape(predict.reshape(1,-1)))
+# print(np.shape(y_test.reshape(1,-1)))
+print(f" \n accuracy ={reg.score(X_test, y_test.ravel())}")
