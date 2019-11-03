@@ -34,6 +34,24 @@ class NeuralNet:
         total_loss = -np.mean( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
         return total_loss
 
+    def fit(self, X_train, y_train):
+        eta = 0.01
+        lmbd = 0.01
+        for i in range(1000):
+            # calculate gradients
+            dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
+
+            # regularization term gradients
+            dWo += lmbd * self.output_weights
+            dWh += lmbd * self.hidden_weights
+
+            # update weights and biases
+            self.output_weights -= eta * dWo
+            self.output_bias -= eta * dBo
+            self.hidden_weights -= eta * dWh
+            self.hidden_bias -= eta * dBh
+
+
     def feed_forward(self, X):
         z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
         a_h = self.sigmoid(z_h)
@@ -50,12 +68,13 @@ class NeuralNet:
         return a_h, probabilities
 
     def backpropagation(self, X, y):
-        a_h, probabilities = self.feed_forward_train(X)
+        a_h, probabilities = self.feed_forward(X)
+        print(f"accuracy: {self.accuracy(probabilities>0.5, y)}")
         
         # error in the output layer
         error_output = probabilities - y
         # error in the hidden layer
-        error_hidden = np.matmul(error_output, output_weights.T) * a_h * (1 - a_h)
+        error_hidden = np.matmul(error_output, self.output_weights.T) * a_h * (1 - a_h)
         
         # gradients for the output layer
         output_weights_gradient = np.matmul(a_h.T, error_output)
@@ -67,13 +86,7 @@ class NeuralNet:
 
         return output_weights_gradient, output_bias_gradient, hidden_weights_gradient, hidden_bias_gradient
 
-    def update_weights(self, dWo, dBo, dWh, dBh):
-        pass
-        # update weights and biases
-        output_weights -= eta * dWo
-        output_bias -= eta * dBo
-        hidden_weights -= eta * dWh
-        hidden_bias -= eta * dBh
+
 
     def accuracy(self,y_actual,y_model):
         """
