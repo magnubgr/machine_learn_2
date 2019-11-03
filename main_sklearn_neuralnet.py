@@ -16,17 +16,17 @@ X, y = clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y,
                                    test_size=0.3, random_state=4)
 
-reg = sklearn.neural_network.MLPRegressor(
-hidden_layer_sizes = (10,10),
+reg = sklearn.neural_network.MLPClassifier(
+hidden_layer_sizes = (100,1000),
 learning_rate = "adaptive",
 learning_rate_init = 0.001,
-max_iter = 100000,
-tol = 1e-10,
+max_iter = 1000,
+tol = 1e-7,
 verbose = True,
 )
 
 reg = reg.fit(X_train, y_train)
 
 predict = reg.fit(X_train,y_train)
-
+print(predict)
 print(f" \n accuracy ={reg.score(X_test,y_test)}")

@@ -48,7 +48,14 @@ class NeuralNet:
         return total_loss
 
     def feed_forward(self):
-        pass
+        a = np.zeros(self._hidden_layers + 2, dtype = np.ndarray)
+        z = np.zeros(self._hidden_layers + 2, dtype = np.ndarray)
+        a[0] = X
+        z[0] = 0
+        for i in range(self._hidden_layers +1):
+            z[i+1] = a[i] @ self._weights[i] + self._bias[i]
+            a[i+1] = self._act_functions[i](z[i+1])
+        return z, a
 
     def backward_propagation(self):
         pass
