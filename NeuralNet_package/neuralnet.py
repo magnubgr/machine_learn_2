@@ -9,9 +9,24 @@ import os
 
 
 class NeuralNet:
+<<<<<<< HEAD
     def __init__(self):  #n_categories=10,
 
         self.read_data = False
+=======
+    def __init__(self,
+            X_data,
+            Y_data,
+            n_hidden_neurons=50,
+            n_categories=10,
+            epochs=10,
+            batch_size=100,
+            eta=0.1,
+            lmbd=0.0):
+        self.read_data = False
+
+        # building our neural network
+>>>>>>> 7d93342307407dbdacb563dd44035a04374aa25b
 
 
     def initialize_weights(self, X, y, n_hidden_neurons):
@@ -24,6 +39,10 @@ class NeuralNet:
         self.output_weights = np.random.randn(n_hidden_neurons, n_outputs)
         self.output_bias = np.zeros(n_outputs) + 0.01
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7d93342307407dbdacb563dd44035a04374aa25b
 
     def sigmoid(self,t):
         return 1./(1+ np.exp(-t))
@@ -88,8 +107,8 @@ class NeuralNet:
 
     def display_data(self):
         """
-        prints the df to display the data
-        Checks that you have read the data
+        prints the df to display the data.
+        Checks that you have read the data.
         """
         if (self.read_data==True):
             print ("Checking out the numbers in the dataset")
