@@ -44,18 +44,20 @@ class NeuralNetClassifier:
     #     return self.sigmoid(t) * ( 1 - self.sigmoid(t) )
 
 
-    def cost(self,y_pred, y_train):
+    def cost(self,y_pred, y):
         ## Using the cross-entropy cost function
         # y = y.reshape(-1,1) # Test if needed
         total_loss = -np.mean(
-                            scs.xlogy(y_train,y_pred) 
-                            + scs.xlogy(1-y_train, 1-y_pred)
+                            scs.xlogy(y,y_pred) 
+                            + scs.xlogy(1-y, 1-y_pred)
                             )
         return total_loss
 
-    def fit(self, X_train, y_train):
+    def fit(self, X_train, y_train, X_test, y_test):
         train_loss = []
         test_loss = []
+        train_score = []
+        test_score = []
         eta = self.learning_rate
         lmbd = self.L2_penalty
         counter = 0
@@ -65,13 +67,15 @@ class NeuralNetClassifier:
 
             cost1 = self.cost(self.probabilities, y_train)
             train_loss.append(cost1)
+            train_score.append(self.accuracy(y_train, self.probabilities>0.5))
+            
+            test_predict = self.predict(X_test)
+            test_loss.append( self.cost( test_predict , y_test) )
+            test_score.append( self.accuracy(y_test, test_predict>0.5) )
             if self.verbose:
                 print ("cost_function", cost1)
 
             dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
-
-            probs = self.predict(X_train)
-
 
             cost2 = self.cost(self.probabilities, y_train)
 
@@ -85,6 +89,7 @@ class NeuralNetClassifier:
             # if ac1>ac2:
             #     print ("hail Cthulhu devourer of worlds")
             # regularization term gradients
+            
             dWo += lmbd * self.output_weights
             dWh += lmbd * self.hidden_weights
 
@@ -93,7 +98,7 @@ class NeuralNetClassifier:
             self.output_bias -= eta * dBo
             self.hidden_weights -= eta * dWh
             self.hidden_bias -= eta * dBh
-        return train_loss
+        return train_loss, test_loss, train_score, test_score
 
     def feed_forward(self, X):
         z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
