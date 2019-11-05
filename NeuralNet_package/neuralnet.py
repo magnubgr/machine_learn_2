@@ -28,28 +28,30 @@ class NeuralNet:
 
     def sigmoid(self,t):
         return 1./(1+ np.exp(-t))
-    def d_sigmoid(self,t):
-        return self.sigmoid(t) * ( 1 - self.sigmoid(t) )
+    # def d_sigmoid(self,t):
+    #     return self.sigmoid(t) * ( 1 - self.sigmoid(t) )
+
 
     def cost(self,y_pred, y_train):
         ## Using the cross-entropy cost function
         # y = y.reshape(-1,1) # Test if needed
-        total_loss = -np.means(\
-        scs.xlogy(y_train,y_pred) + scs.xlogy(1-y_train, 1-y_pred))
+        total_loss = -np.mean(
+                            scs.xlogy(y_train,y_pred) + scs.xlogy(1-y_train, 1-y_pred)
+                            )
         return total_loss
 
     def fit(self, X_train, y_train, n_iterations,learning_rate, tol =1e-5):
         eta = learning_rate
         lmbd = 0.01
+        counter=0
         self.probabilities = np.zeros(len(y_train))
         for i in range(n_iterations):
             # calculate gradients
-            counter=0
-            ac1 = self.accuracy(self.probabilities>0.5, y_train)
+            cost1 = self.cost(self.probabilities, y_train)
             dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
-            ac2 = self.accuracy(self.probabilities>0.5, y_train)
+            cost2 = self.cost(self.probabilities, y_train)
             print ("cost_function",self.cost(self.probabilities, y_train))
-            if abs(ac1-ac2)<tol:
+            if abs(cost1-cost2)<tol:
                 if counter==1:
                     print("tolerance value reached")
                     break
@@ -86,7 +88,7 @@ class NeuralNet:
 
     def backpropagation(self, X, y):
         a_h, self.probabilities = self.feed_forward(X)
-        print(f"accuracy: {self.accuracy(self.probabilities>0.5, y)}")
+        # print(f"accuracy: {self.accuracy(self.probabilities>0.5, y)}")
 
         # error in the output layer
         error_output = self.probabilities - y
@@ -172,16 +174,16 @@ class NeuralNet:
         self.df["SINGLE"] = (self.df["MARRIAGE"]==2).astype("int")
         self.df.drop("MARRIAGE", axis=1, inplace=True)
 
-        self.X = self.df.loc[:, self.df.columns != 'DEFAULT'].values
-        self.y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
+        X = self.df.loc[:, self.df.columns != 'DEFAULT'].values
+        y = self.df.loc[:, self.df.columns == 'DEFAULT'].values
         ## Scale the features. So that for example LIMIT_BAL isnt larger than AGE
         ################## THIS IS WRONG. DONT SCALE 0 and 1 #############################################
         standard_scaler = StandardScaler()
-        self.X = standard_scaler.fit_transform(self.X)
+        X = standard_scaler.fit_transform(X)
         # robust_scaler = RobustScaler()        # RobustScaler ignores outliers
-        # self.X = robust_scaler.fit_transform(self.X)
+        # X = robust_scaler.fit_transform(X)
 
-        return self.X, self.y
+        return X, y
 
     def train_test_split(self, X, y, test_size=0.3, random_state=4):
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
