@@ -1,4 +1,4 @@
-from NeuralNet_package.neuralnet import NeuralNet
+from NeuralNet_package.neuralnet import NeuralNetClassifier
 from NeuralNet_package.neural_v2 import NeuralNetRegression
 import numpy as np
 import unittest
@@ -15,7 +15,7 @@ class NeuralNetClassifier_test(unittest.TestCase):
         """
         check that the sigmoid function is calculated correctly
         """
-        obj = NeuralNet()
+        obj = NeuralNetClassifier()
         self.assertEqual(obj.sigmoid(0),0.5)
         self.assertAlmostEqual(obj.sigmoid(1), 1/(1+np.exp(-1)))
 
@@ -23,7 +23,7 @@ class NeuralNetClassifier_test(unittest.TestCase):
         """
         checks the accuracy function that checks the model with actual data
         """
-        obj = NeuralNet()
+        obj = NeuralNetClassifier()
         y_actual = np.array([1,1,0,0])
         y_model = np.array([1,1,1,0])
         with self.assertRaises(ValueError):
@@ -36,14 +36,14 @@ class NeuralNetClassifier_test(unittest.TestCase):
         Test for display_data, that checks that it raises an exception, when
         trying to display the data without having read any data.
         """
-        obj = NeuralNet()
+        obj = NeuralNetClassifier()
         with self.assertRaises(SyntaxError):
             obj.display_data()
 
 
 class NeuralNetRegression_test(unittest.TestCase):
     """
-    This class is testfunction for NeuralNetRegression. 
+    This class is testfunction for NeuralNetRegression.
     """
     def test_canary(self):
         "testing that the simplest case works"

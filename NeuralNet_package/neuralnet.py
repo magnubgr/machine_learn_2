@@ -11,9 +11,7 @@ import os
 
 class NeuralNetClassifier:
     def __init__(self):
-
         self.read_data = False
-
 
     def initialize_weights(self, X, y, n_hidden_neurons):
         n_inputs, n_features = X.shape
