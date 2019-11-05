@@ -1,10 +1,11 @@
 Change script names
 
-
 Proof for Cross-entropy choice
-
 
 NeuralNet Classifier
 
-
 NeuralNet Regression
+
+References from Aurélien Géron
+
+Move the "data-getters" out of the classes, i.e. Franke and credit card
