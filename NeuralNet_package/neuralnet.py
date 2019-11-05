@@ -2,6 +2,7 @@
 
 from sklearn.preprocessing import StandardScaler, RobustScaler
 from sklearn.model_selection import  train_test_split
+import scipy.special as scs
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -9,7 +10,7 @@ import os
 
 
 class NeuralNet:
-    def __init__(self):  #n_categories=10,
+    def __init__(self):
 
         self.read_data = False
 
@@ -28,19 +29,33 @@ class NeuralNet:
     def sigmoid(self,t):
         return 1./(1+ np.exp(-t))
 
-    def cost(self, beta, X, y):
+    def cost(self,y_pred, y_train):
         ## Using the cross-entropy cost function
         # y = y.reshape(-1,1) # Test if needed
-        total_loss = -np.mean( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
+        total_loss = -np.means(\
+        scs.xlogy(y_train,y_pred) + scs.xlogy(1-y_train, 1-y_pred))
         return total_loss
 
-    def fit(self, X_train, y_train):
-        eta = 0.01
+    def fit(self, X_train, y_train, n_iterations,learning_rate, tol =1e-5):
+        eta = learning_rate
         lmbd = 0.01
-        for i in range(1000):
+        self.probabilities = np.zeros(len(y_train))
+        for i in range(n_iterations):
             # calculate gradients
+            counter=0
+            ac1 = self.accuracy(self.probabilities>0.5, y_train)
             dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
-
+            ac2 = self.accuracy(self.probabilities>0.5, y_train)
+            print ("cost_function",self.cost(self.probabilities, y_train))
+            if abs(ac1-ac2)<tol:
+                if counter==1:
+                    print("tolerance value reached")
+                    break
+                counter += 1
+            else:
+                counter =0
+            # if ac1>ac2:
+            #     print ("hail Cthulhu devourer of worlds")
             # regularization term gradients
             dWo += lmbd * self.output_weights
             dWh += lmbd * self.hidden_weights
@@ -60,19 +75,19 @@ class NeuralNet:
 
         ## Softmax activation:
             # exp_term = np.exp(z_o)
-            # probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
+            # self.probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
 
         ## Sigmoid activation
-        probabilities = self.sigmoid(z_o)
+        self.probabilities = self.sigmoid(z_o)
 
-        return a_h, probabilities
+        return a_h, self.probabilities
 
     def backpropagation(self, X, y):
-        a_h, probabilities = self.feed_forward(X)
-        print(f"accuracy: {self.accuracy(probabilities>0.5, y)}")
+        a_h, self.probabilities = self.feed_forward(X)
+        print(f"accuracy: {self.accuracy(self.probabilities>0.5, y)}")
 
         # error in the output layer
-        error_output = probabilities - y
+        error_output = self.probabilities - y
         # error in the hidden layer
         error_hidden = np.matmul(error_output, self.output_weights.T) * a_h * (1 - a_h)
 

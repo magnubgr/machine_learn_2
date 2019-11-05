@@ -25,7 +25,9 @@ nn_clf.initialize_weights(X_train, y_train, n_hidden_neurons=50)
 
 # output_weights_gradient, output_bias_gradient, hidden_weights_gradient, hidden_bias_gradient = nn_clf.backpropagation(X_train, y_train)
 
-nn_clf.fit(X_train, y_train)
+n_iterations = 1000
+learning_rate = 0.00001
+nn_clf.fit(X_train, y_train, n_iterations, learning_rate )
 
 # coef, loss_arr = clf.fit_data(X_train, y_train, learning_rate=0.1, n_iter=400)
 # pred = clf.predict(X_test)
@@ -38,4 +40,3 @@ nn_clf.fit(X_train, y_train)
 # plt.ylabel("Cost function", size=15)
 # plt.legend([r"Cost function $C(\beta)$"])
 # plt.show()
-

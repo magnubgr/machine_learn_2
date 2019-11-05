@@ -2,7 +2,7 @@ from Classifier_package.classifier import Classifier
 import numpy as np
 import unittest
 
-class Regsolver_test(unittest.TestCase):
+class Classifier_test(unittest.TestCase):
     """
     This class is a testfunction for Regsolver.
     """
