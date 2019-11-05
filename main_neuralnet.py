@@ -11,6 +11,7 @@ runs the classifier class with data from the data package
 xls_file = "default_credit_card_data.xls"
 nn_clf = NeuralNetClassifier(
                         n_hidden_neurons = 50,
+                        L2_penalty = 0.0001,
                         learning_rate = 0.00001,
                         max_iter = 1000,
                         tol = 1e-4,
@@ -18,23 +19,33 @@ nn_clf = NeuralNetClassifier(
                         )
 
 X, y = nn_clf.read_credit_card_file(xls_file)
-X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.3, random_state=4)
+X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.001, random_state=4)
 nn_clf.initialize_weights(X_train, y_train)
-loss_array = nn_clf.fit(X_train, y_train)
+train_loss, test_loss, train_score, test_score = nn_clf.fit(X_train, y_train, X_test, y_test)
 
-train_probs = nn_clf.predict(X_train)
-train_score = nn_clf.accuracy(y_train, train_probs>0.5)
+# train_probs = nn_clf.predict(X_train)
+# train_score = nn_clf.accuracy(y_train, train_probs>0.5)
 
-test_probs = nn_clf.predict(X_test)
-test_score = nn_clf.accuracy(y_test, test_probs>0.5)
+# test_probs = nn_clf.predict(X_test)
+# test_score = nn_clf.accuracy(y_test, test_probs>0.5)
 
-print(f"Accuracy Score for training set: {train_score}")
-print(f"Accuracy Score for testing set:  {test_score}")
+# print(f"Accuracy Score for training set: {train_score}")
+# print(f"Accuracy Score for testing set:  {test_score}")
 
 plt.style.use("seaborn-talk")
-plt.plot(loss_array)
+plt.plot(train_loss)
+plt.plot(test_loss)
+plt.legend(["Training Loss","Testing Loss"])
 plt.xlabel("Iterations", size=15)
 plt.ylabel("Loss from Cost function", size=15)
+plt.show()
+
+plt.style.use("seaborn-talk")
+plt.plot(train_score)
+plt.plot(test_score)
+plt.legend(["Training Score","Testing Score"])
+plt.xlabel("Iterations", size=15)
+plt.ylabel("Accuracy Score", size=15)
 plt.show()
 
 # coef, loss_arr = clf.fit_data(X_train, y_train, learning_rate=0.1, n_iter=400)
