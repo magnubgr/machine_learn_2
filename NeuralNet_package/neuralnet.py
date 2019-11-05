@@ -9,8 +9,17 @@ import os
 
 
 class NeuralNetClassifier:
-    def __init__(self, n_hidden_neurons, learning_rate=0.001, max_iter=1000, tol=1e-5, verbose=False):
+    def __init__(
+            self, 
+            n_hidden_neurons, 
+            L2_penalty=0.0001,
+            learning_rate=0.001, 
+            max_iter=1000, 
+            tol=1e-5, 
+            verbose=False):
+
         self.n_hidden_neurons = n_hidden_neurons
+        self.L2_penalty = L2_penalty
         self.learning_rate = learning_rate
         self.max_iter = 1000
         self.tol = tol
@@ -39,13 +48,14 @@ class NeuralNetClassifier:
         ## Using the cross-entropy cost function
         # y = y.reshape(-1,1) # Test if needed
         total_loss = -np.mean(
-                            scs.xlogy(y_train,y_pred) + scs.xlogy(1-y_train, 1-y_pred)
+                            scs.xlogy(y_train,y_pred) 
+                            + scs.xlogy(1-y_train, 1-y_pred)
                             )
         return total_loss
 
     def fit(self, X_train, y_train):
         eta = self.learning_rate
-        lmbd = 0.01
+        lmbd = self.L2_penalty
         counter=0
         self.probabilities = np.zeros(len(y_train))
         for i in range(self.max_iter):

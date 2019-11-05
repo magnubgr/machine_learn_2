@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 from sklearn.preprocessing import PolynomialFeatures
-from imageio import imread
 
 class NeuralNetRegression:
     def __init__(self,x,y, degree = 5):
