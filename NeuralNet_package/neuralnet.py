@@ -10,19 +10,24 @@ import os
 
 
 class NeuralNetClassifier:
-    def __init__(self):
+    def __init__(self, n_hidden_neurons, learning_rate=0.001, max_iter=1000, tol=1e-5, verbose=False):
+        self.n_hidden_neurons = n_hidden_neurons
+        self.learning_rate = learning_rate
+        self.max_iter = 1000
+        self.tol = tol
+        self.verbose = verbose
 
         self.read_data = False
 
 
-    def initialize_weights(self, X, y, n_hidden_neurons):
+    def initialize_weights(self, X, y):
         n_inputs, n_features = X.shape
         n_outputs = len(np.unique(y))-1
 
-        self.hidden_weights = np.random.randn(n_features, n_hidden_neurons)
-        self.hidden_bias = np.zeros(n_hidden_neurons) + 0.01
+        self.hidden_weights = np.random.randn(n_features, self.n_hidden_neurons)
+        self.hidden_bias = np.zeros(self.n_hidden_neurons) + 0.01
 
-        self.output_weights = np.random.randn(n_hidden_neurons, n_outputs)
+        self.output_weights = np.random.randn(self.n_hidden_neurons, n_outputs)
         self.output_bias = np.zeros(n_outputs) + 0.01
 
 
@@ -40,18 +45,19 @@ class NeuralNetClassifier:
                             )
         return total_loss
 
-    def fit(self, X_train, y_train, n_iterations,learning_rate, tol =1e-5):
-        eta = learning_rate
+    def fit(self, X_train, y_train):
+        eta = self.learning_rate
         lmbd = 0.01
         counter=0
         self.probabilities = np.zeros(len(y_train))
-        for i in range(n_iterations):
+        for i in range(self.max_iter):
             # calculate gradients
             cost1 = self.cost(self.probabilities, y_train)
             dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
             cost2 = self.cost(self.probabilities, y_train)
-            print ("cost_function",self.cost(self.probabilities, y_train))
-            if abs(cost1-cost2)<tol:
+            if self.verbose: 
+                print ("cost_function",self.cost(self.probabilities, y_train))
+            if abs(cost1-cost2)<self.tol:
                 if counter==1:
                     print("tolerance value reached")
                     break
