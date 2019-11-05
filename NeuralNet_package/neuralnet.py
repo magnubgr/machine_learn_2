@@ -9,7 +9,7 @@ import numpy as np
 import os
 
 
-class NeuralNet:
+class NeuralNetClassifier:
     def __init__(self):
 
         self.read_data = False
@@ -95,7 +95,7 @@ class NeuralNet:
         # error in the hidden layer
         d_sigmoid = a_h * (1 - a_h)
         error_hidden = np.matmul(error_output, self.output_weights.T) * d_sigmoid # This last oart is ofcourse the derivative of the sigmoid
- 
+
         # gradients for the output layer
         output_weights_gradient = np.matmul(a_h.T, error_output)
         output_bias_gradient = np.sum(error_output, axis=0)
