@@ -54,17 +54,27 @@ class NeuralNetClassifier:
         return total_loss
 
     def fit(self, X_train, y_train):
+        train_loss = []
+        test_loss = []
         eta = self.learning_rate
         lmbd = self.L2_penalty
-        counter=0
+        counter = 0
         self.probabilities = np.zeros(len(y_train))
+
         for i in range(self.max_iter):
-            # calculate gradients
+
             cost1 = self.cost(self.probabilities, y_train)
-            dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
-            cost2 = self.cost(self.probabilities, y_train)
+            train_loss.append(cost1)
             if self.verbose:
-                print ("cost_function",self.cost(self.probabilities, y_train))
+                print ("cost_function", cost1)
+
+            dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
+
+            probs = self.predict(X_train)
+
+
+            cost2 = self.cost(self.probabilities, y_train)
+
             if abs(cost1-cost2)<self.tol:
                 if counter==1:
                     print("tolerance value reached")
@@ -83,7 +93,7 @@ class NeuralNetClassifier:
             self.output_bias -= eta * dBo
             self.hidden_weights -= eta * dWh
             self.hidden_bias -= eta * dBh
-
+        return train_loss
 
     def feed_forward(self, X):
         z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
@@ -99,6 +109,21 @@ class NeuralNetClassifier:
         self.probabilities = self.sigmoid(z_o)
 
         return a_h, self.probabilities
+
+    def predict(self, X):
+        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
+        a_h = self.sigmoid(z_h)
+
+        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
+
+        ## Softmax activation:
+            # exp_term = np.exp(z_o)
+            # self.probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
+
+        ## Sigmoid activation
+        probabilities = self.sigmoid(z_o)
+
+        return probabilities
 
     def backpropagation(self, X, y):
         a_h, self.probabilities = self.feed_forward(X)
