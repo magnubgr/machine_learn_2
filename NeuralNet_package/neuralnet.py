@@ -28,6 +28,8 @@ class NeuralNet:
 
     def sigmoid(self,t):
         return 1./(1+ np.exp(-t))
+    def d_sigmoid(self,t):
+        return self.sigmoid(t) * ( 1 - self.sigmoid(t) )
 
     def cost(self,y_pred, y_train):
         ## Using the cross-entropy cost function
@@ -89,8 +91,9 @@ class NeuralNet:
         # error in the output layer
         error_output = self.probabilities - y
         # error in the hidden layer
-        error_hidden = np.matmul(error_output, self.output_weights.T) * a_h * (1 - a_h)
-
+        d_sigmoid = a_h * (1 - a_h)
+        error_hidden = np.matmul(error_output, self.output_weights.T) * d_sigmoid # This last oart is ofcourse the derivative of the sigmoid
+ 
         # gradients for the output layer
         output_weights_gradient = np.matmul(a_h.T, error_output)
         output_bias_gradient = np.sum(error_output, axis=0)
