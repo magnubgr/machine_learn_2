@@ -60,17 +60,19 @@ class NeuralNetRegression:
         pass
 
     def feed_forward(self):
-        # 
+        # Maybe the same here?
         pass
 
     def backpropagation(self):
-        
+        # Dont copy this. Dependent on cost function. Prolly easier though
         pass
 
     def fit(self):
+        # Perhaps pretty similar?
         pass
 
     def predict(self):
+        # This is basically feed forward without setting global variables
         pass
 
 
