@@ -61,7 +61,7 @@ class NeuralNetRegression_test(unittest.TestCase):
         y = np.linspace(0,1,n)
         y_data = np.random.normal(0,sigma,n)
 
-        obj = NeuralNetRegression(x,y)
+        obj = NeuralNetRegression(x,y,y_data)
         self.assertAlmostEqual(obj.var(x),0.08, places=2)
         self.assertAlmostEqual(obj.var(y_data), sigma**2, places=1)
 
@@ -75,7 +75,7 @@ class NeuralNetRegression_test(unittest.TestCase):
         y_data = np.linspace(0,1,n)
         y_model = np.linspace(0,1,n)
         # return np.mean( (self.y_model-self.y_data)**2 )
-        obj = NeuralNetRegression(x,y_model)
+        obj = NeuralNetRegression(x,y_model,y_model)
         self.assertEqual(obj.MSE(y_data=y_data, y_model = y_model),0)
 
     def test_R2(self):
@@ -85,11 +85,11 @@ class NeuralNetRegression_test(unittest.TestCase):
         """
         n = 50000
         x = np.linspace(0,1,n)
-        y1 = np.linspace(0,1,n)
-        y2 = np.linspace(0,1,n)
+        y_data = np.linspace(0,1,n)
+        y_model = np.linspace(0,1,n)
         # return np.mean( (self.y_model-self.y_data)**2 )
-        obj = NeuralNetRegression(x,y1)
-        self.assertEqual(obj.R2(y_data=y1, y_model = y2),1)
+        obj = NeuralNetRegression(x,y_data,y_model)
+        self.assertEqual(obj.R2(y_data, y_model),1)
 
 
 if __name__ == '__main__':

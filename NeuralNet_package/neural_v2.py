@@ -4,13 +4,13 @@ import time
 from sklearn.preprocessing import PolynomialFeatures
 
 class NeuralNetRegression:
-    def __init__(self,x,y, degree = 5):
+    def __init__(self,x,y,y_data, degree = 5):
         self.x = x
         self.y = y
         self.degree = degree
         self.n = len(x)
         self.setX()
-        self.y_data = self.FrankeFunction(x,y)
+        self.y_data =y.data
 
     def setX(self,):
         xy_zip = np.array(list(zip(self.x,self.y)))
