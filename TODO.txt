@@ -1,11 +1,11 @@
-Change script names
+Change script names[]
 
-Proof for Cross-entropy choice
+Proof for Cross-entropy choice []
 
-NeuralNet Classifier
+NeuralNet Classifier []
 
-NeuralNet Regression
+NeuralNet Regression []
 
-References from Aurélien Géron
+References from Aurélien Géron []
 
 Move the "data-getters" out of the classes, i.e. Franke and credit card

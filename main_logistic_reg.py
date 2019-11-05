@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 import numpy as np
 import matplotlib.pyplot as plt
-from Classifier_package.classifier import Classifier
+from Regression_package.LogisticRegressor import LogisticRegression
 """
 runs the classifier class with data from the data package
 """
 xls_file = "default_credit_card_data.xls"
-clf = Classifier()
+clf = LogisticRegression()
 X, y = clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.3, random_state=4)
 

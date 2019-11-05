@@ -3,7 +3,7 @@ import seaborn as sb
 import numpy as np
 import matplotlib.pyplot as plt
 from Regression_package.LogisticRegressor import LogisticRegression
-from sklearn.linear_model import LogisticRegression
+
 
 """
 runs the classifier class with data from the data package
@@ -13,9 +13,11 @@ xls_file = "default_credit_card_data.xls"
 clf = LogisticRegression()
 X, y = clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.3, random_state=4)
-#clf.display_data()
+
 def heat_map():
     # learning_rate = np.arange(0,1,0.5)
+    print("creating heatmap of the accuracy vs learning_rate\
+    and # of iterations ")
     learning_rate = np.linspace(0.5,2,20)
     n_iterations = np.arange(250,400,30)
     accuracy_score = np.zeros((len(learning_rate),len(n_iterations)))
@@ -42,6 +44,7 @@ def heat_map():
 
 
 def learning_rate_plot():
+    print ("plotting accuacry as a function of learning_rate")
     learning_rate = np.linspace(1,2,100)
     n_iterations = 300
     accuracy_score = np.zeros(len(learning_rate))
@@ -67,6 +70,7 @@ def printing_accuracy(learning_rate, n_iterations):
         "at {learning_rate} and # iterations {n_iterations}")
 
 def n_iterations_plot():
+    print ("plotting accuracy as a function of the number of iterations")
     n_iterations = np.arange(2,200,5)
     learning_rate = 1.5
     print("running accuracy vs iterations plot. learning_rate = "+str(learning_rate))
@@ -114,7 +118,7 @@ def Skikit_Regression():
 
 
 n_iterations_plot()
-Skikit_Regression()
+# Skikit_Regression()
 learning_rate_plot()
 # heat_map()
 plt.legend()

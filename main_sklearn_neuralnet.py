@@ -12,11 +12,6 @@ import sklearn.metrics
 import sys
 
 
-
-# sys.path.insert(1, './data/')
-# import data/FrankeFunction
-
-
 def classifier():
     xls_file = "default_credit_card_data.xls"
     clf = LogisticRegression()
@@ -61,14 +56,13 @@ def classifier():
 
 
 def regression():
-    np.random.seed(2019)
+    # np.random.seed(12)
     tif_file = "veggli_terrain"
-    n = 200
+    n = 40
     x = np.linspace(0,1,n); np.random.shuffle(x)
     y = np.linspace(0,1,n); np.random.shuffle(y)
     X,Y = np.meshgrid(x,y)
-    dat = NeuralNetRegression(x,y)
-    Z = dat.Z()
+    Z = FrankeFunction(X,Y)
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
 
@@ -76,12 +70,12 @@ def regression():
         X_d, y_d, test_size=0.4)
 
     reg = sklearn.neural_network.MLPRegressor(
-                            hidden_layer_sizes = (100, 20),
+                            hidden_layer_sizes = (100),
                             learning_rate = "adaptive",
-                            learning_rate_init=0.01,
+                            learning_rate_init=0.0001,
                             max_iter= 10000,
-                            tol = 1e-10,
-                            verbose = True, 
+                            tol = 1e-11,
+                            verbose = True,
                             )
     reg = reg.fit(X_train,y_train)
     pred = reg.predict(X_test)
