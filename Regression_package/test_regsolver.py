@@ -1,6 +1,6 @@
 import numpy as np
 import unittest
-from LinearRegressionMethod.reg_solver import RegSolver
+from Regression_package.LinearRegressor import RegSolver
 """
 """
 

@@ -18,7 +18,7 @@ Describe the model and input argument
 """
 
 
-class Classifier:
+class LogisticRegression:
     def __init__(self):
     # def __init__(self,x,y,y_data):
 

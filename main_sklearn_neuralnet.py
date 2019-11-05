@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from Classifier_package.classifier import Classifier
+from Regression_package.LogisticRegressor import LogisticRegression
+from Regression_package.Franke_function import FrankeFunction
 from NeuralNet_package.neural_v2 import NeuralNetRegression
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
@@ -11,13 +12,14 @@ import sklearn.metrics
 import sys
 
 
-sys.path.insert(1, './data/')
-import data/FrankeFunction
+
+# sys.path.insert(1, './data/')
+# import data/FrankeFunction
 
 
 def classifier():
     xls_file = "default_credit_card_data.xls"
-    clf = Classifier()
+    clf = LogisticRegression()
     X, y = clf.read_credit_card_file(xls_file)
     X_train, X_test, y_train, y_test = clf.train_test_split(X, y,
                                    test_size=0.3, random_state=4)
@@ -74,12 +76,13 @@ def regression():
         X_d, y_d, test_size=0.4)
 
     reg = sklearn.neural_network.MLPRegressor(
-    hidden_layer_sizes = (100, 20),
-    learning_rate = "adaptive",
-    learning_rate_init=0.01,
-    max_iter= 10000,
-    tol = 1e-10,
-    verbose = True, )
+                            hidden_layer_sizes = (100, 20),
+                            learning_rate = "adaptive",
+                            learning_rate_init=0.01,
+                            max_iter= 10000,
+                            tol = 1e-10,
+                            verbose = True, 
+                            )
     reg = reg.fit(X_train,y_train)
     pred = reg.predict(X_test)
     print(f"MS = {sklearn.metrics.mean_squared_error(y_test,pred)}")
