@@ -7,13 +7,12 @@ from imageio import imread
 class NeuralNetRegression:
     def __init__(self,x,y, degree = 5):
         self.y_data = self.FrankeFunction(x,y)
-        self.x =x ; self.y= y
+        self.x = x
+        self.y = y
         self.degree = degree
+        self.setX()
 
-        self.getX()
-
-
-    def getX(self,):
+    def setX(self,):
         xy_zip = np.array(list(zip(self.x,self.y)))
         poly = PolynomialFeatures(self.degree)   # using sklearn.preprocessing
         self.X_ = poly.fit_transform(xy_zip)
@@ -39,23 +38,18 @@ class NeuralNetRegression:
         """
         return np.sum((l-np.mean(l))**2)/len(l)
 
-    def MSE(self, y_data=[], y_model=[]):
+    def MSE(self, y_data, y_model):
         """
         takes the MSE of two arrays, y_data being the data and y_model being
         the model fitted on the data
         """
-        y_data = self.y_data if len(y_data) == 0 else y_data
-        y_model = self.y_model if len(y_model)==0 else y_model
-        # return np.mean( (self.y_model-self.y_data)**2 )
         return np.mean( (y_model-y_data)**2 )
 
-    def R2(self, y_data=[], y_model=[]):
+    def R2(self, y_data, y_model):
         """
         Calculates the R2 score of the function of the y_model
         comaped to the y_data. 1 is the best score and 0 is the worst.
         """
-        y_data = self.y_data if len(y_data)==0 else y_data
-        y_model = self.y_model if len(y_model)==0 else y_model
         return 1 - np.sum((y_data - y_model) ** 2) /\
          np.sum((y_data - np.mean(y_data)) ** 2)
 
