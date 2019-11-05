@@ -4,13 +4,25 @@ import time
 from sklearn.preprocessing import PolynomialFeatures
 
 class NeuralNetRegression:
-    def __init__(self,x,y,y_data, degree = 5):
-        self.x = x
-        self.y = y
-        self.degree = degree
-        self.n = len(x)
-        self.setX()
-        self.y_data =y.data
+    def __init__(
+            self, 
+            n_hidden_neurons, 
+            L2_penalty=0.0001,
+            learning_rate=0.001, 
+            max_iter=1000, 
+            tol=1e-5, 
+            verbose=False):
+
+        self.n_hidden_neurons = n_hidden_neurons
+        self.L2_penalty = L2_penalty
+        self.learning_rate = learning_rate
+        self.max_iter = 1000
+        self.tol = tol
+        self.verbose = verbose
+        self.read_data = False
+
+
+
 
     def setX(self,):
         xy_zip = np.array(list(zip(self.x,self.y)))
@@ -20,13 +32,49 @@ class NeuralNetRegression:
     def X(self):
         return self.X_
 
-    def Z(self,):
-        return self.y_data
-
     def train_test_split(self,test_size=0.3, random_state=4):
         X_train, X_test, y_train, y_test = train_test_split(self.X_, self.y_data,\
         test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
+
+    def fix_and_maybe_scale_data_input(self):
+        pass
+
+    def initialize_weights(self, X, y):
+        n_inputs, n_features = X.shape
+        n_outputs = 1
+
+        self.hidden_weights = np.random.randn(n_features, self.n_hidden_neurons)
+        self.hidden_bias = np.zeros(self.n_hidden_neurons) + 0.01
+
+        self.output_weights = np.random.randn(self.n_hidden_neurons, n_outputs)
+        self.output_bias = np.zeros(n_outputs) + 0.01
+
+    def sigmoid(self):
+        # Implement sigmoid
+        pass
+
+    def cost(self):
+        # IMPLEMENT LEAST SQUARES COST
+        #  SEE MORTENS SLIDE FOR MORE        
+        pass
+
+    def feed_forward(self):
+        # 
+        pass
+
+    def backpropagation(self):
+        
+        pass
+
+    def fit(self):
+        pass
+
+    def predict(self):
+        pass
+
+
+
 
     def var(self,l):
         """
