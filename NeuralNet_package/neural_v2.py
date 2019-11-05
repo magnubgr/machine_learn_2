@@ -5,12 +5,12 @@ from sklearn.preprocessing import PolynomialFeatures
 
 class NeuralNetRegression:
     def __init__(
-            self, 
-            n_hidden_neurons, 
+            self,
+            n_hidden_neurons,
             L2_penalty=0.0001,
-            learning_rate=0.001, 
-            max_iter=1000, 
-            tol=1e-5, 
+            learning_rate=0.001,
+            max_iter=1000,
+            tol=1e-5,
             verbose=False):
 
         self.n_hidden_neurons = n_hidden_neurons
@@ -20,8 +20,6 @@ class NeuralNetRegression:
         self.tol = tol
         self.verbose = verbose
         self.read_data = False
-
-
 
 
     def setX(self,):
@@ -50,14 +48,17 @@ class NeuralNetRegression:
         self.output_weights = np.random.randn(self.n_hidden_neurons, n_outputs)
         self.output_bias = np.zeros(n_outputs) + 0.01
 
-    def sigmoid(self):
+    def sigmoid(self,t):
         # Implement sigmoid
-        pass
+        return 1/(1+np.exp(-t))
 
-    def cost(self):
-        # IMPLEMENT LEAST SQUARES COST
-        #  SEE MORTENS SLIDE FOR MORE        
-        pass
+    def MSE(self, y_data, y_model):
+        """
+        takes the MSE of two arrays, y_data being the data and y_model being
+        the model fitted on the data
+        """
+        return np.mean( (y_model-y_data)**2 )
+                    
 
     def feed_forward(self):
         # Maybe the same here?
@@ -84,12 +85,6 @@ class NeuralNetRegression:
         """
         return np.sum((l-np.mean(l))**2)/len(l)
 
-    def MSE(self, y_data, y_model):
-        """
-        takes the MSE of two arrays, y_data being the data and y_model being
-        the model fitted on the data
-        """
-        return np.mean( (y_model-y_data)**2 )
 
     def R2(self, y_data, y_model):
         """

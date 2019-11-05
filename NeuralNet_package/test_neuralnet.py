@@ -91,6 +91,13 @@ class NeuralNetRegression_test(unittest.TestCase):
         obj = NeuralNetRegression(x,y_data,y_model)
         self.assertEqual(obj.R2(y_data, y_model),1)
 
+    def test_sigmoid(self):
+        """
+        check that the sigmoid function is calculated correctly
+        """
+        obj = NeuralNetRegression(1) # not importnant input
+        self.assertEqual(obj.sigmoid(0),0.5)
+        self.assertAlmostEqual(obj.sigmoid(1), 1/(1+np.exp(-1)))
 
 if __name__ == '__main__':
     unittest.main()

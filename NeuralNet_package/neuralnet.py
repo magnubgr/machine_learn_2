@@ -10,12 +10,12 @@ import os
 
 class NeuralNetClassifier:
     def __init__(
-            self, 
-            n_hidden_neurons, 
+            self,
+            n_hidden_neurons,
             L2_penalty=0.0001,
-            learning_rate=0.001, 
-            max_iter=1000, 
-            tol=1e-5, 
+            learning_rate=0.001,
+            max_iter=1000,
+            tol=1e-5,
             verbose=False):
 
         self.n_hidden_neurons = n_hidden_neurons
@@ -39,7 +39,7 @@ class NeuralNetClassifier:
 
 
     def sigmoid(self,t):
-        return 1./(1+ np.exp(-t))
+        return 1/(1+ np.exp(-t))
     # def d_sigmoid(self,t):
     #     return self.sigmoid(t) * ( 1 - self.sigmoid(t) )
 
@@ -48,7 +48,7 @@ class NeuralNetClassifier:
         ## Using the cross-entropy cost function
         # y = y.reshape(-1,1) # Test if needed
         total_loss = -np.mean(
-                            scs.xlogy(y,y_pred) 
+                            scs.xlogy(y,y_pred)
                             + scs.xlogy(1-y, 1-y_pred)
                             )
         return total_loss
@@ -68,7 +68,7 @@ class NeuralNetClassifier:
             cost1 = self.cost(self.probabilities, y_train)
             train_loss.append(cost1)
             train_score.append(self.accuracy(y_train, self.probabilities>0.5))
-            
+
             test_predict = self.predict(X_test)
             test_loss.append( self.cost( test_predict , y_test) )
             test_score.append( self.accuracy(y_test, test_predict>0.5) )
@@ -89,7 +89,7 @@ class NeuralNetClassifier:
             # if ac1>ac2:
             #     print ("hail Cthulhu devourer of worlds")
             # regularization term gradients
-            
+
             dWo += lmbd * self.output_weights
             dWh += lmbd * self.hidden_weights
 

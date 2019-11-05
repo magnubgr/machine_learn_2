@@ -12,14 +12,13 @@ then
 fi
 
 
-
-echo "1"
-python main_logistic_reg.py
-echo "2"
-python main_comparing_logistic.py
-echo "3"
-python main_neuralnet.py
-echo "4"
-python main_sklearn_neuralnet.py
+# echo "1"
+# python main_logistic_reg.py
+# echo "2"
+# python main_comparing_logistic.py
+# echo "3"
+# python main_neuralnet.py
+# echo "4"
+# python main_sklearn_neuralnet.py
 # echo "5"
 # python main.py
