@@ -1,0 +1,10 @@
+Change script names
+
+
+Proof for Cross-entropy choice
+
+
+NeuralNet Classifier
+
+
+NeuralNet Regression
