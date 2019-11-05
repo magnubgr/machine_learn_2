@@ -15,7 +15,7 @@ class NeuralNetClassifier_test(unittest.TestCase):
         """
         check that the sigmoid function is calculated correctly
         """
-        obj = NeuralNetClassifier()
+        obj = NeuralNetClassifier(1) # not importnant input
         self.assertEqual(obj.sigmoid(0),0.5)
         self.assertAlmostEqual(obj.sigmoid(1), 1/(1+np.exp(-1)))
 
@@ -23,7 +23,7 @@ class NeuralNetClassifier_test(unittest.TestCase):
         """
         checks the accuracy function that checks the model with actual data
         """
-        obj = NeuralNetClassifier()
+        obj = NeuralNetClassifier(1) # not importnant input
         y_actual = np.array([1,1,0,0])
         y_model = np.array([1,1,1,0])
         with self.assertRaises(ValueError):
@@ -36,7 +36,7 @@ class NeuralNetClassifier_test(unittest.TestCase):
         Test for display_data, that checks that it raises an exception, when
         trying to display the data without having read any data.
         """
-        obj = NeuralNetClassifier()
+        obj = NeuralNetClassifier(1) # not importnant input
         with self.assertRaises(SyntaxError):
             obj.display_data()
 

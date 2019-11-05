@@ -15,7 +15,6 @@ class NeuralNetClassifier:
         self.max_iter = 1000
         self.tol = tol
         self.verbose = verbose
-
         self.read_data = False
 
 
@@ -134,8 +133,6 @@ class NeuralNetClassifier:
             print(self.df)
         else:
             raise SyntaxError("need to read the data first" )
-
-
 
     def read_credit_card_file(self, xls_file):
         #extract the data
