@@ -58,11 +58,21 @@ class NeuralNetRegression:
         the model fitted on the data
         """
         return np.mean( (y_model-y_data)**2 )
-                    
+
 
     def feed_forward(self):
-        # Maybe the same here?
-        pass
+        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
+        a_h = self.sigmoid(z_h)
+
+        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
+
+        ## Softmax activation:
+            # exp_term = np.exp(z_o)
+            # self.probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
+
+        ## Sigmoid activation
+        self.probabilities = self.sigmoid(z_o)
+        return a_h, self.probabilities
 
     def backpropagation(self):
         # Dont copy this. Dependent on cost function. Prolly easier though
