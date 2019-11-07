@@ -24,17 +24,28 @@ plt.legend([r"Cost function $C(\beta)$"])
 plt.show()
 
 def bestCurve(y):
-	defaults = sum(y == 1)
-	total = len(y)
-	x = np.linspace(0, 1, total)
-	y1 = np.linspace(0, 1, defaults)
-	y2 = np.ones(total-defaults)
-	y3 = np.concatenate([y1,y2])
-	return x, y3
-
-plot_cumulative_gain
+    defaults = sum(y == 1)
+    total = len(y)
+    x = np.linspace(0, 1, total)
+    y1 = np.linspace(0, 1, defaults)
+    y2 = np.ones(total-defaults)
+    y3 = np.concatenate([y1,y2])
+    return x, y3
 
 
+default = clf.prob(X_test, coef)
+print(np.shape(default))
+not_default = 1-default
+print(np.shape(not_default))
+x = np.linspace(0, 1, len(default))
+heyo = np.zeros((len(default), 2))
+heyo[:,0] = default.ravel()
+heyo[:,1] = not_default.ravel()
+print(np.shape(heyo))
 
-skplt.metrics.plot_roc(y_test, pred)
+
+# x,y3 = bestCurve(probs)
+# print(np.shape(x),"y3",np.shape(y3))
+# print (np.unique(pred), np.unique(x), np.unique(y3))
+skplt.metrics.plot_roc(x,heyo)
 plt.show()
