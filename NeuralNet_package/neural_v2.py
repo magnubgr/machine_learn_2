@@ -37,10 +37,6 @@ class NeuralNetRegression:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
 
-
-    def fix_and_maybe_scale_data_input(self):
-        pass
-
     def initialize_weights(self, X, y):
         n_inputs, n_features = X.shape
         n_outputs = 1
@@ -82,19 +78,12 @@ class NeuralNetRegression:
 
         # error in the output layer
         error_output = self.probabilities - y
-        print("error_o",error_output.shape)
+        # print("error_o",error_output.shape)
 
         # error in the hidden layer
         d_sigmoid = a_h * (1 - a_h)
-        print("d_sig",d_sigmoid.shape)
-
-        print("w_o:",self.output_weights.shape)
-        # error_hidden = np.zeros(len(self.hidden_weights))
-        # for j in range(len(self.hidden_weights)):
-        #     for k in range(len(self.output_weights)):
-        #          error_hidden[j] += error_output[k] * self.output_weights[k][j] * d_sigmoid[k,j] 
-           
-        
+        # print("d_sig",d_sigmoid.shape)
+        # print("w_o:",self.output_weights.shape)   
         error_hidden = np.matmul(error_output, self.output_weights.T) * d_sigmoid 
 
         # gradients for the output layer
@@ -108,10 +97,10 @@ class NeuralNetRegression:
         return output_weights_gradient, output_bias_gradient, hidden_weights_gradient, hidden_bias_gradient
 
 
-    def fit(self, X_train, y_train, X_test, y_test):
-        # Perhaps pretty similar?
-        self.backpropagation(X_train, y_train)
-        return 0, 1, 2, 3
+    # def fit(self, X_train, y_train, X_test, y_test):
+    #     # Perhaps pretty similar?
+    #     self.backpropagation(X_train, y_train)
+    #     return 0, 1, 2, 3
 
 
     def fit(self, X_train, y_train, X_test, y_test):
@@ -124,21 +113,16 @@ class NeuralNetRegression:
         counter = 0
         self.probabilities = np.zeros(len(y_train))
 
-        
-        print("prob",self.probabilities)
-        print("prob",np.shape(self.probabilities))
-        """
+
         for i in range(self.max_iter):
 
             cost1 = self.cost(self.probabilities, y_train)
-            print(cost1)
-            print(cost1.shape)
-            # train_loss.append(cost1)
-            # train_score.append(self.accuracy(y_train, self.probabilities>0.5))
+            train_loss.append(cost1)
+            train_score.append(self.R2(y_train, self.probabilities>0.5))
 
-            # test_predict = self.predict(X_test)
-            # test_loss.append( self.cost( test_predict , y_test) )
-            # test_score.append( self.accuracy(y_test, test_predict>0.5) )
+            test_predict = self.predict(X_test)
+            test_loss.append( self.cost( test_predict , y_test) )
+            test_score.append( self.R2(y_test, test_predict>0.5) )
             if self.verbose:
                 print ("cost_function", cost1)
 
@@ -165,7 +149,6 @@ class NeuralNetRegression:
             self.output_bias -= eta * dBo
             self.hidden_weights -= eta * dWh
             self.hidden_bias -= eta * dBh
-        """
         return train_loss, test_loss, train_score, test_score
 
         

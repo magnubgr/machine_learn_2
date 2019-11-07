@@ -20,7 +20,8 @@ def regression():
     Z = FrankeFunction(X,Y)
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
-    # print(np.max(y_d), np.min(y_d))
+    y_d = (y_d-np.min(y_d))/(np.max(y_d)-np.min(y_d))
+    print(np.max(y_d), np.min(y_d))
 
 
     nn_reg = NeuralNetRegression(
@@ -29,14 +30,30 @@ def regression():
                         learning_rate=0.001,
                         max_iter=1000,
                         tol=1e-5,
-                        verbose=False)
+                        verbose=True)
 
     X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.3, random_state=4)
     nn_reg.initialize_weights(X_train, y_train)
     train_loss, test_loss, train_score, test_score = nn_reg.fit(X_train, y_train, X_test, y_test)
-    # pred = nn_reg.predict(X_test)
+    pred = nn_reg.predict(X_test)
 
-    # print(f"MSE = {nn_reg.MSE(y_test,pred)}")
-    # print(f"R2 ={nn_reg.R2(y_test,pred)}")
+    print(f"MSE = {nn_reg.MSE(y_test,pred)}")
+    print(f"R2 ={nn_reg.R2(y_test,pred)}")
+
+    plt.style.use("seaborn-talk")
+    plt.plot(train_loss)
+    plt.plot(test_loss)
+    plt.legend(["Training Loss","Testing Loss"])
+    plt.xlabel("Iterations", size=15)
+    plt.ylabel("Loss from MSE function", size=15)
+    plt.show()
+
+    plt.style.use("seaborn-talk")
+    plt.plot(train_score)
+    plt.plot(test_score)
+    plt.legend(["Training R2 Score","Testing R2 Score"])
+    plt.xlabel("Iterations", size=15)
+    plt.ylabel("R2 Score", size=15)
+    plt.show()
 
 regression()
