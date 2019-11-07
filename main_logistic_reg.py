@@ -32,20 +32,21 @@ def bestCurve(y):
     y3 = np.concatenate([y1,y2])
     return x, y3
 
-
+x, y3 = bestCurve(y_test)
 default = clf.prob(X_test, coef)
-print(np.shape(default))
+
 not_default = 1-default
-print(np.shape(not_default))
+
 x = np.linspace(0, 1, len(default))
 y_probas = np.zeros((len(default), 2))
-y_probas[:,0] = default.ravel()
-y_probas[:,1] = not_default.ravel()
-print(np.shape(y_probas))
+y_probas[:,1] = default.ravel()
+y_probas[:,0] = not_default.ravel()
+
 
 
 # x,y3 = bestCurve(probs)
 # print(np.shape(x),"y3",np.shape(y3))
 # print (np.unique(pred), np.unique(x), np.unique(y3))
-skplt.metrics.plot_roc(y_test,y_probas)
+skplt.metrics.plot_cumulative_gain(y_test,y3)
+skplt.metrics.plot_cumulative_gain(y_test,y_probas)
 plt.show()
