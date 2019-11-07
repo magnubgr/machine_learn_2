@@ -18,6 +18,7 @@ nn_clf = NeuralNetClassifier(
                         verbose = True
                         )
 
+
 X, y = nn_clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.001, random_state=4)
 nn_clf.initialize_weights(X_train, y_train)
