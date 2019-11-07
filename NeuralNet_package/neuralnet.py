@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from sklearn.preprocessing import StandardScaler, RobustScaler
-from sklearn.model_selection import  train_test_split
+from sklearn.model_selection import train_test_split
 import scipy.special as scs
 import matplotlib.pyplot as plt
 import pandas as pd

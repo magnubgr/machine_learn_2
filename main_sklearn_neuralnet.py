@@ -19,7 +19,7 @@ def classifier():
     X_train, X_test, y_train, y_test = clf.train_test_split(X, y,
                                    test_size=0.3, random_state=4)
     n = 7
-    learning_rate = 10**(-np.linspace(0,n-1,n))
+    learning_rate = 10**(-np.linspace(1,n,n))
     timer = np.zeros(n)
     accuracy_score = np.zeros(n)
 
@@ -58,6 +58,45 @@ def classifier():
 def regression():
     # np.random.seed(12)
     tif_file = "veggli_terrain"
+    n = 300
+    x = np.linspace(0,1,n); np.random.shuffle(x)
+    y = np.linspace(0,1,n); np.random.shuffle(y)
+    X,Y = np.meshgrid(x,y)
+    Z = FrankeFunction(X,Y)
+    X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
+    y_d = Z.ravel()[:, np.newaxis]
+    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
+    X_d, y_d, test_size=0.4)
+
+    m = 60
+    features = (np.linspace(10,m,m/5,dtype=float))
+    R2_score = np.zeros(m)
+    for i in range(len(features)):
+        reg = sklearn.neural_network.MLPRegressor(
+                                hidden_layer_sizes = (int(features[i]),int(features[i]),int(features[i]),int(features[i])),
+                                learning_rate = "adaptive",
+                                learning_rate_init=0.001,
+                                max_iter= 10000,
+                                tol = 1e-11,
+                                verbose = False,
+                                )
+        reg = reg.fit(X_train,y_train)
+        pred = reg.predict(X_test)
+        R2_score[i] = reg.score(X_test,y_test)
+
+        print(f"MSE = {sklearn.metrics.mean_squared_error(y_test,pred)}")
+        print(f"R2 = {reg.score(X_test,y_test)}")
+    plt.plot(features,R2_score, "*")
+    plt.plot(features,R2_score)
+    plt.xlabel("features")
+    plt.ylabel("R2 score")
+    plt.title("scikitlearn neural net for multiple features")
+    plt.show()
+
+
+def regression_heatmap():
+    # np.random.seed(12)
+    tif_file = "veggli_terrain"
     n = 40
     x = np.linspace(0,1,n); np.random.shuffle(x)
     y = np.linspace(0,1,n); np.random.shuffle(y)
@@ -65,21 +104,33 @@ def regression():
     Z = FrankeFunction(X,Y)
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
-
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
-        X_d, y_d, test_size=0.4)
+    X_d, y_d, test_size=0.4)
 
-    reg = sklearn.neural_network.MLPRegressor(
-                            hidden_layer_sizes = (100),
-                            learning_rate = "adaptive",
-                            learning_rate_init=0.0001,
-                            max_iter= 10000,
-                            tol = 1e-11,
-                            verbose = True,
-                            )
-    reg = reg.fit(X_train,y_train)
-    pred = reg.predict(X_test)
-    print(f"MS = {sklearn.metrics.mean_squared_error(y_test,pred)}")
-    print(f"R2 ={reg.score(X_test,y_test)}")
+    m = 4
+    features = 10*(np.linspace(1,m,m,dtype=float))
+    R2_score = np.zeros(m)
+    for i in range(len(features)):
+        reg = sklearn.neural_network.MLPRegressor(
+                                hidden_layer_sizes = (int(features[i])),
+                                learning_rate = "adaptive",
+                                learning_rate_init=0.001,
+                                max_iter= 10000,
+                                tol = 1e-11,
+                                verbose = False,
+                                )
+        reg = reg.fit(X_train,y_train)
+        pred = reg.predict(X_test)
+        R2_score[i] = reg.score(X_test,y_test)
+
+        print(f"MSE = {sklearn.metrics.mean_squared_error(y_test,pred)}")
+        print(f"R2 = {reg.score(X_test,y_test)}")
+    plt.plot(features,R2_score, "*")
+    plt.plot(features,R2_score)
+    print("eyyoo")
+    plt.xlabel("layers")
+    plt.ylabel("R2 score")
+    plt.title("scikitlearn neural net for multiple layers")
+    plt.show()
 
 regression()

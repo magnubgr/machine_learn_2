@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import scikitplot as skplt
 import numpy as np
 import matplotlib.pyplot as plt
 from Regression_package.LogisticRegressor import LogisticRegression
@@ -20,4 +21,20 @@ plt.plot(loss_arr)
 plt.xlabel("Number of iterations", size=15)
 plt.ylabel("Cost function", size=15)
 plt.legend([r"Cost function $C(\beta)$"])
+plt.show()
+
+def bestCurve(y):
+	defaults = sum(y == 1)
+	total = len(y)
+	x = np.linspace(0, 1, total)
+	y1 = np.linspace(0, 1, defaults)
+	y2 = np.ones(total-defaults)
+	y3 = np.concatenate([y1,y2])
+	return x, y3
+
+plot_cumulative_gain
+
+
+
+skplt.metrics.plot_roc(y_test, pred)
 plt.show()
