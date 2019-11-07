@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.model_selection import  train_test_split
+
 
 class NeuralNetRegression:
     def __init__(
@@ -30,10 +32,11 @@ class NeuralNetRegression:
     def X(self):
         return self.X_
 
-    def train_test_split(self,test_size=0.3, random_state=4):
-        X_train, X_test, y_train, y_test = train_test_split(self.X_, self.y_data,\
-        test_size=test_size, random_state=4)
+
+    def train_test_split(self, X, y, test_size=0.3, random_state=4):
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
+
 
     def fix_and_maybe_scale_data_input(self):
         pass
@@ -52,16 +55,15 @@ class NeuralNetRegression:
         # Implement sigmoid
         return 1/(1+np.exp(-t))
 
-    def MSE(self, y_data, y_model):
-        """
-        takes the MSE of two arrays, y_data being the data and y_model being
-        the model fitted on the data
-        """
-        return np.mean( (y_model-y_data)**2 )
+    def cost(self, y_data, y_actual):
+        return self.MSE(y_data, y_actual)
 
-
-    def feed_forward(self):
+    def feed_forward(self, X):
         z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
+        # print("X:",np.shape(X))
+        # print("w_h",self.hidden_weights.shape)
+        # print("b_h",self.hidden_bias.shape)
+        # print("z_h",z_h.shape)
         a_h = self.sigmoid(z_h)
 
         z_o = np.matmul(a_h, self.output_weights) + self.output_bias
@@ -74,17 +76,114 @@ class NeuralNetRegression:
         self.probabilities = self.sigmoid(z_o)
         return a_h, self.probabilities
 
-    def backpropagation(self):
+    def backpropagation(self, X, y):
         # Dont copy this. Dependent on cost function. Prolly easier though
-        pass
+        a_h, self.probabilities = self.feed_forward(X)
 
-    def fit(self):
+        # error in the output layer
+        error_output = self.probabilities - y
+        print("error_o",error_output.shape)
+
+        # error in the hidden layer
+        d_sigmoid = a_h * (1 - a_h)
+        print("d_sig",d_sigmoid.shape)
+
+        print("w_o:",self.output_weights.shape)
+        # error_hidden = np.zeros(len(self.hidden_weights))
+        # for j in range(len(self.hidden_weights)):
+        #     for k in range(len(self.output_weights)):
+        #          error_hidden[j] += error_output[k] * self.output_weights[k][j] * d_sigmoid[k,j] 
+           
+        
+        error_hidden = np.matmul(error_output, self.output_weights.T) * d_sigmoid 
+
+        # gradients for the output layer
+        output_weights_gradient = np.matmul(a_h.T, error_output)
+        output_bias_gradient = np.sum(error_output, axis=0)
+
+        # # gradient for the hidden layer
+        hidden_weights_gradient = np.matmul(X.T, error_hidden)
+        hidden_bias_gradient = np.sum(error_hidden, axis=0)
+
+        return output_weights_gradient, output_bias_gradient, hidden_weights_gradient, hidden_bias_gradient
+
+
+    def fit(self, X_train, y_train, X_test, y_test):
         # Perhaps pretty similar?
-        pass
+        self.backpropagation(X_train, y_train)
+        return 0, 1, 2, 3
 
-    def predict(self):
+
+    def fit(self, X_train, y_train, X_test, y_test):
+        train_loss = []
+        test_loss = []
+        train_score = []
+        test_score = []
+        eta = self.learning_rate
+        lmbd = self.L2_penalty
+        counter = 0
+        self.probabilities = np.zeros(len(y_train))
+
+        
+        print("prob",self.probabilities)
+        print("prob",np.shape(self.probabilities))
+        """
+        for i in range(self.max_iter):
+
+            cost1 = self.cost(self.probabilities, y_train)
+            print(cost1)
+            print(cost1.shape)
+            # train_loss.append(cost1)
+            # train_score.append(self.accuracy(y_train, self.probabilities>0.5))
+
+            # test_predict = self.predict(X_test)
+            # test_loss.append( self.cost( test_predict , y_test) )
+            # test_score.append( self.accuracy(y_test, test_predict>0.5) )
+            if self.verbose:
+                print ("cost_function", cost1)
+
+            dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
+
+            cost2 = self.cost(self.probabilities, y_train)
+
+            if abs(cost1-cost2)<self.tol:
+                if counter==1:
+                    print("tolerance value reached")
+                    break
+                counter += 1
+            else:
+                counter =0
+            # if ac1>ac2:
+            #     print ("hail Cthulhu devourer of worlds")
+            # regularization term gradients
+
+            dWo += lmbd * self.output_weights
+            dWh += lmbd * self.hidden_weights
+
+            # update weights and biases
+            self.output_weights -= eta * dWo
+            self.output_bias -= eta * dBo
+            self.hidden_weights -= eta * dWh
+            self.hidden_bias -= eta * dBh
+        """
+        return train_loss, test_loss, train_score, test_score
+
+        
+
+    def predict(self, X):
         # This is basically feed forward without setting global variables
-        pass
+        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
+        a_h = self.sigmoid(z_h)
+
+        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
+
+        ## Softmax activation:
+            # exp_term = np.exp(z_o)
+            # self.probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
+
+        ## Sigmoid activation
+        probabilities = self.sigmoid(z_o)
+        return probabilities
 
 
 
@@ -95,6 +194,12 @@ class NeuralNetRegression:
         """
         return np.sum((l-np.mean(l))**2)/len(l)
 
+    def MSE(self, y_data, y_model):
+        """
+        takes the MSE of two arrays, y_data being the data and y_model being
+        the model fitted on the data
+        """
+        return np.mean( (y_model-y_data)**2 )
 
     def R2(self, y_data, y_model):
         """
