@@ -34,18 +34,22 @@ def bestCurve(y):
 
 
 default = clf.prob(X_test, coef)
-print(np.shape(default))
 not_default = 1-default
-print(np.shape(not_default))
 x = np.linspace(0, 1, len(default))
 y_probas = np.zeros((len(default), 2))
 y_probas[:,0] = default.ravel()
 y_probas[:,1] = not_default.ravel()
-print(np.shape(y_probas))
+
+
+y_test_probas = np.zeros((len(y_test), 2))
+y_test_probas[:,0] = y_test.ravel()==0
+y_test_probas[:,1] = y_test.ravel()==1
+
 
 
 # x,y3 = bestCurve(probs)
 # print(np.shape(x),"y3",np.shape(y3))
 # print (np.unique(pred), np.unique(x), np.unique(y3))
 skplt.metrics.plot_roc(y_test,y_probas)
+skplt.metrics.plot_roc(y_test,y_test_probas)
 plt.show()
