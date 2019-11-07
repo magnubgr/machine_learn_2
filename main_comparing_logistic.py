@@ -120,6 +120,6 @@ def Skikit_Regression():
 # n_iterations_plot()
 # Skikit_Regression()
 # learning_rate_plot()
-heat_map()
+# heat_map()
 plt.legend()
 plt.show()

@@ -9,3 +9,10 @@ NeuralNet Regression []
 References from Aurélien Géron []
 
 Move the "data-getters" out of the classes, i.e. Franke and credit card
+
+
+
+
+QUESTIONS:
+Referere til Scikit-Plot/Scikit-Learn
+R
