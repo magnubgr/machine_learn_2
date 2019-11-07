@@ -22,7 +22,7 @@ plt.ylabel("Cost function", size=15)
 plt.legend([r"Cost function $C(\beta)$"])
 plt.show()
 
-
+print(y.shape)
 
 def cumulative_gain():
     def bestCurve(y):

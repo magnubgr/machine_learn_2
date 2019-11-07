@@ -19,8 +19,11 @@ def heat_map():
     # learning_rate = np.arange(0,1,0.5)
     print("creating heatmap of the accuracy vs learning_rate\
     and # of iterations ")
-    learning_rate = np.linspace(0.01,2.5,5)
-    n_iterations = np.linspace(100,500,5, dtype=int)
+    learning_rate = np.linspace(0, 2.0, 21)
+    n_iterations = np.linspace(50, 260, 15)
+    print(learning_rate)
+    print(n_iterations)
+    exit()
 
     accuracy_score = np.zeros((len(learning_rate),len(n_iterations)))
 
@@ -38,8 +41,9 @@ def heat_map():
     heat_map = sb.heatmap(accuracy_score, xticklabels=n_iterations, yticklabels=learning_rate,  cmap="viridis")
     heat_map.set_yticklabels(heat_map.get_yticklabels(), rotation=0)
     plt.title(r"Heatmap of accuracy_score for different learning_rate and iterations", size=20)
-    plt.xlabel(r"learning_rate $\gamma $ ", size=18)
-    plt.ylabel(r"n_iterations ", size=18)
+    plt.ylabel(r"learning_rate $\gamma $ ", size=18)
+    plt.xlabel(r"n_iterations ", size=18)
+    plt.savefig("plots/Logistic_Regression/LogReg_heatmap.png")
     plt.show()
     print( np.max(accuracy_score) ,np.where(np.max(accuracy_score)==accuracy_score)[0:1])
     print(np.shape(accuracy_score))

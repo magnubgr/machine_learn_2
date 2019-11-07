@@ -61,6 +61,7 @@ class NeuralNetClassifier:
         eta = self.learning_rate
         lmbd = self.L2_penalty
         counter = 0
+        self.feed_forward(X_train)
         self.probabilities = np.zeros(len(y_train))
 
         for i in range(self.max_iter):
