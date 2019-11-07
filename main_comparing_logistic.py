@@ -40,6 +40,7 @@ def heat_map():
     plt.title(r"Heatmap of accuracy_score for different learning_rate and iterations", size=20)
     plt.ylabel(r"learning_rate $\gamma $ ", size=18)
     plt.xlabel(r"n_iterations ", size=18)
+    plt.savefig("plots/Logistic_Regression/LogReg_heatmap.png")
     plt.show()
     print( np.max(accuracy_score) ,np.where(np.max(accuracy_score)==accuracy_score)[0:1])
     print(np.shape(accuracy_score))

@@ -13,8 +13,8 @@ nn_clf = NeuralNetClassifier(
                         n_hidden_neurons = 50,
                         L2_penalty = 0.0001,
                         learning_rate = 0.00001,
-                        max_iter = 1000,
-                        tol = 1e-4,
+                        max_iter = 500,
+                        tol = 1e-13,
                         verbose = True
                         )
 
