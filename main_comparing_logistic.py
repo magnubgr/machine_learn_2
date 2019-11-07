@@ -19,8 +19,8 @@ def heat_map():
     # learning_rate = np.arange(0,1,0.5)
     print("creating heatmap of the accuracy vs learning_rate\
     and # of iterations ")
-    learning_rate = np.linspace(0.01,2.5,5)
-    n_iterations = np.linspace(100,500,5, dtype=int)
+    learning_rate = np.linspace(0.0,2,21)
+    n_iterations = np.linspace(30,300,18, dtype=int)
 
     accuracy_score = np.zeros((len(learning_rate),len(n_iterations)))
 
@@ -28,9 +28,9 @@ def heat_map():
         if 100*i%len(learning_rate) == 0:
             print(int(100*i/len(learning_rate)), "%")
         for j in range(len(n_iterations)):
-            clf.fit_data(X_train, 
+            clf.fit_data(X_train,
                         y_train,
-                        learning_rate=learning_rate[i], 
+                        learning_rate=learning_rate[i],
                         n_iter=n_iterations[j])
             pred = clf.predict(X_test)
             accuracy = clf.accuracy(pred, y_test.flatten())
@@ -38,8 +38,8 @@ def heat_map():
     heat_map = sb.heatmap(accuracy_score, xticklabels=n_iterations, yticklabels=learning_rate,  cmap="viridis")
     heat_map.set_yticklabels(heat_map.get_yticklabels(), rotation=0)
     plt.title(r"Heatmap of accuracy_score for different learning_rate and iterations", size=20)
-    plt.xlabel(r"learning_rate $\gamma $ ", size=18)
-    plt.ylabel(r"n_iterations ", size=18)
+    plt.ylabel(r"learning_rate $\gamma $ ", size=18)
+    plt.xlabel(r"n_iterations ", size=18)
     plt.show()
     print( np.max(accuracy_score) ,np.where(np.max(accuracy_score)==accuracy_score)[0:1])
     print(np.shape(accuracy_score))
@@ -54,9 +54,9 @@ def learning_rate_plot():
     accuracy_score = np.zeros(len(learning_rate))
     for i in range(len(learning_rate)):
         print(100*i/len(learning_rate),'%')
-        clf.fit_data(X_train, 
+        clf.fit_data(X_train,
                     y_train,
-                    learning_rate=learning_rate[i], 
+                    learning_rate=learning_rate[i],
                     n_iter=n_iterations
                     )
         pred = clf.predict(X_test)
