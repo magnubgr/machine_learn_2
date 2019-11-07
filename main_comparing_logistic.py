@@ -18,8 +18,8 @@ def heat_map():
     # learning_rate = np.arange(0,1,0.5)
     print("creating heatmap of the accuracy vs learning_rate\
     and # of iterations ")
-    learning_rate = np.linspace(0.5,2,20)
-    n_iterations = np.arange(250,400,30)
+    learning_rate = np.linspace(1,1.8,2)
+    n_iterations = np.arange(200,300,2)
     accuracy_score = np.zeros((len(learning_rate),len(n_iterations)))
 
     for i in range(len(learning_rate)):
@@ -117,9 +117,9 @@ def Skikit_Regression():
 
 
 
-n_iterations_plot()
+# n_iterations_plot()
 # Skikit_Regression()
-learning_rate_plot()
-# heat_map()
+# learning_rate_plot()
+heat_map()
 plt.legend()
 plt.show()
