@@ -56,7 +56,7 @@ def regression():
     plt.ylabel("R2 Score", size=15)
     plt.show()
 
-# Regression()
+regression()
 
 
 def regression():
@@ -108,7 +108,7 @@ def regression_sklearn():
     """
     plots the test vs train dataset
     """
-    n = 10
+    n = 30
     x = np.linspace(0,1,n); np.random.shuffle(x)
     y = np.linspace(0,1,n); np.random.shuffle(y)
     X,Y = np.meshgrid(x,y)
@@ -116,24 +116,24 @@ def regression_sklearn():
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
-    X_d, y_d, test_size=0.4)
-    m = 18
-    n_iterations = np.linspace(40,100,m,dtype=int)
+    X_d, y_d, test_size=0.95)
+    m = 40
+    n_iterations = np.linspace(330,360,m,dtype=int)
     R2_score_train = np.zeros(m)
     R2_score_test = np.zeros(m)
     for i in range(len(n_iterations)):
         reg = sklearn.neural_network.MLPRegressor(
-                                hidden_layer_sizes = (10),
+                                hidden_layer_sizes = (30,30,30,30,30),
                                 learning_rate = "adaptive",
-                                learning_rate_init=0.001,
+                                learning_rate_init=0.01,
                                 max_iter= n_iterations[i],
                                 tol = 1e-11,
                                 verbose = False,
                                 )
         reg = reg.fit(X_train,y_train)
         pred = reg.predict(X_test)
-        R2_score_test[i] = reg.score(X_test,y_test)
         R2_score_train[i] = reg.score(X_train,y_train)
+        R2_score_test[i] = reg.score(X_test,y_test)
         print(f"MSE = {sklearn.metrics.mean_squared_error(y_test,pred)}")
         print(f"R2 = {reg.score(X_test,y_test)}")
     plt.plot(n_iterations,R2_score_test, "-*")
@@ -143,7 +143,7 @@ def regression_sklearn():
     plt.legend(["test", "train"])
     plt.xlabel("n_iterations")
     plt.ylabel("R2 score")
-    plt.title("scikitlearn neural net for multiple features")
+    plt.title("scikitlearn neural net for multiple n_iterations and for test and train")
     plt.show()
 
-regression_sklearn()
+# regression_sklearn()
