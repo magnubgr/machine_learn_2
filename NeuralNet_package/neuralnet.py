@@ -28,6 +28,9 @@ class NeuralNetClassifier:
 
 
     def initialize_weights(self, X, y):
+        """
+
+        """
         n_inputs, n_features = X.shape
         n_outputs = len(np.unique(y))-1
 
@@ -39,12 +42,18 @@ class NeuralNetClassifier:
 
 
     def sigmoid(self,t):
+        """
+
+        """
         return 1/(1+ np.exp(-t))
     # def d_sigmoid(self,t):
     #     return self.sigmoid(t) * ( 1 - self.sigmoid(t) )
 
 
     def cost(self,y_pred, y):
+        """
+
+        """
         ## Using the cross-entropy cost function
         # y = y.reshape(-1,1) # Test if needed
         total_loss = -np.mean(
@@ -54,6 +63,9 @@ class NeuralNetClassifier:
         return total_loss
 
     def fit(self, X_train, y_train, X_test, y_test):
+        """
+
+        """
         train_loss = []
         test_loss = []
         train_score = []
@@ -102,6 +114,9 @@ class NeuralNetClassifier:
         return train_loss, test_loss, train_score, test_score
 
     def feed_forward(self, X):
+        """
+
+        """
         z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
         a_h = self.sigmoid(z_h)
 
@@ -117,6 +132,8 @@ class NeuralNetClassifier:
         return a_h, self.probabilities
 
     def predict(self, X):
+        """
+        """
         z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
         a_h = self.sigmoid(z_h)
 
@@ -132,6 +149,8 @@ class NeuralNetClassifier:
         return probabilities
 
     def backpropagation(self, X, y):
+        """
+        """
         a_h, self.probabilities = self.feed_forward(X)
         # print(f"accuracy: {self.accuracy(self.probabilities>0.5, y)}")
 

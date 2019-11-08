@@ -14,7 +14,7 @@ nn_clf = NeuralNetClassifier(
                         L2_penalty = 0.0001,
                         learning_rate = 0.00001,
                         max_iter = 500,
-                        tol = 1e-13,
+                        tol = 1e-3,
                         verbose = True
                         )
 
