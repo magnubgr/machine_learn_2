@@ -12,7 +12,6 @@ Move the "data-getters" out of the classes, i.e. Franke and credit card
 
 
 
-
 QUESTIONS:
 Referere til Scikit-Plot/Scikit-Learn
 
@@ -24,4 +23,8 @@ look at why test and train are incorrect
 run_user interface perhaps?
 comments on code
 Double check that the test functions are working
-perhaps more illustatrations in theory?
+perhaps more illustrations in theory?
+
+Michael: update run_all.sh
+
+Remember clear commit messages over the weekend

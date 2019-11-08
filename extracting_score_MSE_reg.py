@@ -72,12 +72,12 @@ def regression_sklearn():
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
     X_d, y_d, test_size=0.33)
 
-    m = 10
-    features = (np.linspace(10,150,m,dtype=float))
+    m = 1
+    features = np.linspace(120,120,m,dtype=float)
     R2_score = np.zeros(m)
     for i in range(len(features)):
         reg = sklearn.neural_network.MLPRegressor(
-                                hidden_layer_sizes = (int(features[i])),
+                                hidden_layer_sizes = int(features[i]),
                                 learning_rate = "adaptive",
                                 learning_rate_init=0.00001,
                                 max_iter= 10000,

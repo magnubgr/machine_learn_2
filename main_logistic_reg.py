@@ -11,7 +11,7 @@ clf = LogisticRegression()
 X, y = clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.3, random_state=4)
 
-coef, loss_arr = clf.fit_data(X_train, y_train, learning_rate=0.1, n_iter=400)
+coef, loss_arr = clf.fit_data(X_train, y_train, learning_rate=1.6, n_iter=300)
 pred = clf.predict(X_test)
 accuracy = clf.accuracy(pred, y_test.flatten())
 print(f"accuracy_score: {accuracy}")
@@ -66,4 +66,4 @@ def cumulative_gain():
     # plt.savefig("plots/Logistic_Regression/LogReg_roc_curve.png")
     # plt.show()
 
-cumulative_gain()
+# cumulative_gain()
