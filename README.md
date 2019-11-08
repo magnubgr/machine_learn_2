@@ -1,10 +1,10 @@
-# Project for Machine learning for Michael Bitney and Magnus Grøndalen
-This is a machine learning project where process credit card data and use machine learning to extrapolate patterns and other data.
+# Machine learning project 2 by Michael Bitney and Magnus Grøndalen
+This is the repository for a machine learning project at the University of Oslo, where we process credit card data and use machine learning to extrapolate patterns and other data. We create a logistic regressor for classification of the credit card data, and create a neural network from scratch to perform both classification and regression analysis. 
 
-Here we have built two classes, one called Regression_package and one called NeuralNet_package.
-The Regression_package contains Linear Regression which has 3 methods (OLS,Ridge,Lasso) and LogisticRegressor which performs a gradient descent. The Linear Regression methods are taking from a previous project (https://www.google.com "2") #trying to get a link to work.
+Here we have made two packages; one called Regression_package and one called NeuralNet_package.
+The Regression_package contains Linear Regression which has 3 methods (OLS, Ridge and Lasso) and LogisticRegressor which uses a gradient descent to minimize the loss function. The Linear Regression methods are taking from a [previous project](https://github.uio.no/michaesb/ml_project1_mms "2").
 
-The NeuralNet_package contains a Logistic NeuralNet and regression NeuralNet. NeuralNet_package is designed to be very similiar to how you would use scikitlearns package on NeuralNet
+The NeuralNet_package contains a classifying NeuralNet and regression NeuralNet. NeuralNet_package is designed to be very similiar to how you would use Scikit-Learns package on NeuralNet.
 
 
 ## Running the scripts
@@ -42,5 +42,3 @@ This will test both packages with test on for example R2-score, sigmoidfunction 
 
 * **Michael Bitney**
 * **Magnus Grøndalen**
-
-## More will come
