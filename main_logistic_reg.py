@@ -8,18 +8,25 @@ runs the classifier class with data from the data package
 """
 xls_file = "default_credit_card_data.xls"
 clf = LogisticRegression()
-X, y = clf.read_credit_card_file(xls_file)
-X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.3, random_state=4)
+X, y = clf.read_credit_card_file(xls_file,)
+X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.5, random_state=4)
 
-coef, loss_arr = clf.fit_data(X_train, y_train, learning_rate=1.6, n_iter=300)
-pred = clf.predict(X_test)
+coef, loss_arr_train, loss_arr_test, =\
+clf.fit_data(X_train, y_train, y_test, learning_rate=1.3, n_iter=600,verbose=True)
+
+pred = clf.predict(X_test)# get an incorrect bad score
+
 accuracy = clf.accuracy(pred, y_test.flatten())
+print("pred", len(pred), "y_test.flatten", len(y_test.flatten()))
 print(f"accuracy_score: {accuracy}")
 
-plt.plot(loss_arr)
+plt.plot(loss_arr_train)
+plt.plot(loss_arr_test)
+plt.title("our cost function when varying the number of variations")
+plt.legend(["cost train", "cost test"])
 plt.xlabel("Number of iterations", size=15)
 plt.ylabel("Cost function", size=15)
-plt.legend([r"Cost function $C(\beta)$"])
+
 plt.show()
 
 print(y.shape)

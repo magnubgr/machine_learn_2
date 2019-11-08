@@ -11,6 +11,10 @@ import sklearn.model_selection
 import sklearn.metrics
 import sys
 
+"""
+scikitlearns neuralnet methods used in both the classifier and regression case 
+"""
+
 
 def classifier():
     xls_file = "default_credit_card_data.xls"
@@ -57,7 +61,6 @@ def classifier():
 
 def regression():
     # np.random.seed(12)
-    tif_file = "veggli_terrain"
     n = 300
     x = np.linspace(0,1,n); np.random.shuffle(x)
     y = np.linspace(0,1,n); np.random.shuffle(y)
