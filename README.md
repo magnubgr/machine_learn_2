@@ -23,14 +23,9 @@ a bash-script, you can do this by running:
 ./run_scripts/run_all.sh
 ```
 
-```
-python additional_files/displaying_data.py
 
-```
-
-We have a test file that runs multiple tests on the RegressionMethod.
+We have a test file that runs multiple tests on the Regression_package and NeuralNet_package.
 You can run this by typing:
-
 ```
 pytest -v
 ```
@@ -42,5 +37,3 @@ This will test both packages with test on for example R2-score, sigmoidfunction 
 
 * **Michael Bitney**
 * **Magnus Grøndalen**
-
-## More will come
