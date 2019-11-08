@@ -20,7 +20,7 @@ nn_clf = NeuralNetClassifier(
 
 
 X, y = nn_clf.read_credit_card_file(xls_file)
-X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.001, random_state=4)
+X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.1, random_state=4)
 nn_clf.initialize_weights(X_train, y_train)
 train_loss, test_loss, train_score, test_score = nn_clf.fit(X_train, y_train, X_test, y_test)
 
@@ -36,7 +36,7 @@ plt.show()
 
 plt.style.use("seaborn-talk")
 plt.plot(train_score)
-plt.plot(test_score, "r.")
+plt.plot(test_score)
 plt.legend(["Training Score","Testing Score"])
 plt.xlabel("Iterations", size=15)
 plt.ylabel("Accuracy Score", size=15)
