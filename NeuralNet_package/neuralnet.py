@@ -73,7 +73,7 @@ class NeuralNetClassifier:
         eta = self.learning_rate
         lmbd = self.L2_penalty
         counter = 0
-        self.feed_forward(X_train)
+        a_h, self.probabilities = self.feed_forward(X_train)
         self.probabilities = np.zeros(len(y_train))
 
         for i in range(self.max_iter):
@@ -127,9 +127,9 @@ class NeuralNetClassifier:
             # self.probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
 
         ## Sigmoid activation
-        self.probabilities = self.sigmoid(z_o)
+        probabilities = self.sigmoid(z_o)
 
-        return a_h, self.probabilities
+        return a_h, probabilities
 
     def predict(self, X):
         """
@@ -146,7 +146,7 @@ class NeuralNetClassifier:
         ## Sigmoid activation
         probabilities = self.sigmoid(z_o)
 
-        return probabilities
+        return probabilities>0.5
 
     def backpropagation(self, X, y):
         """
@@ -167,6 +167,18 @@ class NeuralNetClassifier:
         # gradient for the hidden layer
         hidden_weights_gradient = np.matmul(X.T, error_hidden)
         hidden_bias_gradient = np.sum(error_hidden, axis=0)
+
+        
+        # a_h, self.probabilities = self.feed_forward(X)
+        # a_o = self.probabilities
+        # dLoss_a_o = y/a_o - (1-y)/(1-a_o)
+
+        # dLoss_z_o = dLoss_a_o * a_o * (1 - a_o)
+        
+        # dLoss_a_h = self.output_weights.T @ dLoss_z_o
+        # dLoss_w_o = 
+
+
 
         return output_weights_gradient, output_bias_gradient, hidden_weights_gradient, hidden_bias_gradient
 

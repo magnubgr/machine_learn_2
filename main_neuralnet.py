@@ -20,7 +20,7 @@ nn_clf = NeuralNetClassifier(
 
 
 X, y = nn_clf.read_credit_card_file(xls_file)
-X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.1, random_state=4)
+X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.3, random_state=4)
 nn_clf.initialize_weights(X_train, y_train)
 train_loss, test_loss, train_score, test_score = nn_clf.fit(X_train, y_train, X_test, y_test)
 
@@ -45,8 +45,8 @@ plt.show()
 
 
 train_probs = nn_clf.predict(X_train)
-train_score = nn_clf.accuracy(y_train, train_probs>0.5)
+train_score = nn_clf.accuracy(y_train, train_probs)
 test_probs = nn_clf.predict(X_test)
-test_score = nn_clf.accuracy(y_test, test_probs>0.5)
+test_score = nn_clf.accuracy(y_test, test_probs)
 print(f"Accuracy Score for training set: {train_score}")
 print(f"Accuracy Score for testing set:  {test_score}")
