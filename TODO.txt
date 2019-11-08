@@ -6,7 +6,7 @@ NeuralNet Classifier []
 
 NeuralNet Regression []
 
-References from Aurélien Géron []
+References from Aurélien Géron [x]
 
 Move the "data-getters" out of the classes, i.e. Franke and credit card
 
@@ -15,4 +15,13 @@ Move the "data-getters" out of the classes, i.e. Franke and credit card
 
 QUESTIONS:
 Referere til Scikit-Plot/Scikit-Learn
-R
+
+
+Over the weekend:
+
+merge neural net to one file
+look at why test and train are incorrect
+run_user interface perhaps?
+comments on code
+Double check that the test functions are working
+perhaps more illustatrations in theory?

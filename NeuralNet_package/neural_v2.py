@@ -83,8 +83,8 @@ class NeuralNetRegression:
         # error in the hidden layer
         d_sigmoid = a_h * (1 - a_h)
         # print("d_sig",d_sigmoid.shape)
-        # print("w_o:",self.output_weights.shape)   
-        error_hidden = np.matmul(error_output, self.output_weights.T) * d_sigmoid 
+        # print("w_o:",self.output_weights.shape)
+        error_hidden = np.matmul(error_output, self.output_weights.T) * d_sigmoid
 
         # gradients for the output layer
         output_weights_gradient = np.matmul(a_h.T, error_output)
@@ -118,11 +118,11 @@ class NeuralNetRegression:
 
             cost1 = self.cost(self.probabilities, y_train)
             train_loss.append(cost1)
-            train_score.append(self.R2(y_train, self.probabilities>0.5))
+            train_score.append(self.R2(y_train, self.probabilities))
 
             test_predict = self.predict(X_test)
             test_loss.append( self.cost( test_predict , y_test) )
-            test_score.append( self.R2(y_test, test_predict>0.5) )
+            test_score.append( self.R2(y_test, test_predict) )
             if self.verbose:
                 print ("cost_function", cost1)
 
@@ -151,7 +151,7 @@ class NeuralNetRegression:
             self.hidden_bias -= eta * dBh
         return train_loss, test_loss, train_score, test_score
 
-        
+
 
     def predict(self, X):
         # This is basically feed forward without setting global variables
