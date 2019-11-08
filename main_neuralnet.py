@@ -14,7 +14,7 @@ nn_clf = NeuralNetClassifier(
                         L2_penalty = 0.0001,
                         learning_rate = 0.00001,
                         max_iter = 500,
-                        tol = 1e-3,
+                        tol = 1e-4,
                         verbose = True
                         )
 
@@ -24,14 +24,6 @@ X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.001
 nn_clf.initialize_weights(X_train, y_train)
 train_loss, test_loss, train_score, test_score = nn_clf.fit(X_train, y_train, X_test, y_test)
 
-# train_probs = nn_clf.predict(X_train)
-# train_score = nn_clf.accuracy(y_train, train_probs>0.5)
-
-# test_probs = nn_clf.predict(X_test)
-# test_score = nn_clf.accuracy(y_test, test_probs>0.5)
-
-# print(f"Accuracy Score for training set: {train_score}")
-# print(f"Accuracy Score for testing set:  {test_score}")
 
 plt.style.use("seaborn-talk")
 plt.plot(train_loss)
@@ -39,24 +31,22 @@ plt.plot(test_loss)
 plt.legend(["Training Loss","Testing Loss"])
 plt.xlabel("Iterations", size=15)
 plt.ylabel("Loss from Cost function", size=15)
+plt.savefig("plots/NN_classifier/NN_clf_training_loss.png")
 plt.show()
 
 plt.style.use("seaborn-talk")
 plt.plot(train_score)
-plt.plot(test_score)
+plt.plot(test_score, "r.")
 plt.legend(["Training Score","Testing Score"])
 plt.xlabel("Iterations", size=15)
 plt.ylabel("Accuracy Score", size=15)
+plt.savefig("plots/NN_classifier/NN_clf_training_score.png")
 plt.show()
 
-# coef, loss_arr = clf.fit_data(X_train, y_train, learning_rate=0.1, n_iter=400)
-# pred = clf.predict(X_test)
-# accuracy = clf.accuracy(pred, y_test.flatten())
-# print(f"accuracy_score: {accuracy}")
 
-# plt.style.use("seaborn-talk")
-# plt.plot(loss_arr)
-# plt.xlabel("Number of iterations", size=15)
-# plt.ylabel("Cost function", size=15)
-# plt.legend([r"Cost function $C(\beta)$"])
-# plt.show()
+train_probs = nn_clf.predict(X_train)
+train_score = nn_clf.accuracy(y_train, train_probs>0.5)
+test_probs = nn_clf.predict(X_test)
+test_score = nn_clf.accuracy(y_test, test_probs>0.5)
+print(f"Accuracy Score for training set: {train_score}")
+print(f"Accuracy Score for testing set:  {test_score}")
