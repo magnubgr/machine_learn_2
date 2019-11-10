@@ -8,28 +8,33 @@ runs the classifier class with data from the data package
 """
 xls_file = "default_credit_card_data.xls"
 clf = LogisticRegression()
-X, y = clf.read_credit_card_file(xls_file,)
-X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.5, random_state=4)
+X, y = clf.read_credit_card_file(xls_file)
+X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.33, random_state=4)
 
-coef, loss_arr_train, loss_arr_test, =\
-clf.fit_data(X_train, y_train, y_test, learning_rate=1.3, n_iter=600,verbose=True)
+coef,train_costs,test_costs,train_scores,test_scores = clf.fit_data(X_train, X_test, y_train, y_test, learning_rate=1.3, n_iter=600,verbose=True)
 
 pred = clf.predict(X_test)# get an incorrect bad score
 
 accuracy = clf.accuracy(pred, y_test.flatten())
-print("pred", len(pred), "y_test.flatten", len(y_test.flatten()))
 print(f"accuracy_score: {accuracy}")
 
-plt.plot(loss_arr_train)
-plt.plot(loss_arr_test)
-plt.title("our cost function when varying the number of variations")
-plt.legend(["cost train", "cost test"])
-plt.xlabel("Number of iterations", size=15)
+plt.plot(train_costs)
+plt.plot(test_costs)
+plt.title("Cost function for test and train data")
+plt.legend(["Train cost", "Test cost"])
+plt.xlabel("Iteration (i)", size=15)
 plt.ylabel("Cost function", size=15)
-
+plt.savefig("plots/Logistic_Regression/logreg_costs.png")
 plt.show()
 
-print(y.shape)
+plt.plot(train_scores)
+plt.plot(test_scores)
+plt.title("Accuracy Score for test and train data")
+plt.legend(["Train score", "Test score"])
+plt.xlabel("Iteration (i)", size=15)
+plt.ylabel("Accuracy Score", size=15)
+plt.savefig("plots/Logistic_Regression/logreg_scores.png")
+plt.show()
 
 def cumulative_gain():
     def bestCurve(y):

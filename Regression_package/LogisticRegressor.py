@@ -39,26 +39,34 @@ class LogisticRegression:
         total_loss = -np.mean( y*np.log(self.prob(X, beta)) + (1-y)*np.log(1-self.prob(X, beta)) )
         return total_loss
 
-    def gradient_descent(self, X, y_test,y_train, learning_rate=0.2, n_iter=100, tol=1e-10,verbose=False):
+    def gradient_descent(self, X_train, X_test, y_train, y_test, learning_rate=0.2, n_iter=100, tol=1e-10,verbose=False):
         np.random.seed(12)
-        beta_new = np.random.rand(X.shape[1],1)
+        beta_new = np.random.rand(X_train.shape[1],1)
         m = len(y_train)
-        cost_arr_train = []
-        cost_arr_test = []
+        train_costs = []
+        test_costs = []
+        train_scores = []
+        test_scores = []
         for i in range(n_iter):
-            # print(i,"/",n_iter)
-            cost_arr_test.append(self.cost_function(beta_new, X, y_test))
-            cost_arr_train.append(self.cost_function(beta_new, X, y_train))
-            if verbose:
-                print(self.cost_function(beta_new, X, y_test))
+            test_cost  = self.cost_function(beta_new, X_test, y_test)
+            train_cost = self.cost_function(beta_new, X_train, y_train)
+            test_costs.append(test_cost)
+            train_costs.append(train_cost)
+            train_scores.append( self.accuracy(y_train, self.prob(X_train,beta_new)>0.5) )
+            test_scores.append( self.accuracy(y_test,  self.prob(X_test,beta_new)>0.5) )
+            
+            if verbose: 
+                print("Loss:",train_cost)
+            
             beta_old = beta_new
-            gradients = (1/m) * np.dot(X.T, (self.prob(X, beta_old) - y_train.reshape(-1,1)))
+            gradients = (1/m) * np.dot(X_train.T, (self.prob(X_train, beta_old) - y_train.reshape(-1,1)))
             beta_new = beta_old - learning_rate * gradients
+            
             if abs(np.sum(beta_new-beta_old))<tol:
                 print("below tolerance: ", tol)
                 break
 
-        return beta_new, cost_arr_train, cost_arr_test
+        return beta_new, train_costs, test_costs, train_scores, test_scores
 
 
     def read_credit_card_file(self, xls_file):
@@ -127,16 +135,16 @@ class LogisticRegression:
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
 
-    def fit_data(self, X_train, y_train,y_test, learning_rate=1.4, n_iter=300,verbose=False):
+    def fit_data(self, X_train, X_test, y_train, y_test, learning_rate=1.4, n_iter=300,verbose=False):
         ##### Scikit-Learn Logistic regression #####
             # self.log_reg = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial')
             # self.log_reg.fit(self.X, self.y.flatten())
 
         ##### Our implementation of Logistic regression #####
-
         y_train = y_train[:, np.newaxis]
-        self.beta, cost_arr_train,cost_arr_test  = self.gradient_descent(X_train, y_train, y_test,learning_rate=learning_rate, n_iter=n_iter,verbose=verbose)
-        return self.beta, cost_arr_train, cost_arr_test
+        y_test = y_test[:, np.newaxis]
+        self.beta, train_costs,test_costs,train_scores,test_scores  = self.gradient_descent(X_train, X_test, y_train, y_test, learning_rate=learning_rate, n_iter=n_iter, verbose=verbose)
+        return self.beta,train_costs,test_costs,train_scores,test_scores
 
     def predict(self, X_test):
         ##### Scikit-Learn predict #####
@@ -145,10 +153,9 @@ class LogisticRegression:
         ##### Our implementation of predict #####
         # X_test = np.c_[np.ones((X_test.shape[0], 1)), X_test] # Add ones to first column
         prediction = self.prob(X_test, self.beta)
-
         return (prediction>=0.5)
 
-    def accuracy(self,y_actual,y_model): #if decice to change
+    def accuracy(self,y_actual,y_model): #if decide to change
         """
         A function that checks how often the arrays match by checking if
         every element in each element matches and divide by the number of elements

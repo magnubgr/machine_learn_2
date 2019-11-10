@@ -29,6 +29,7 @@ def heat_map():
             print(int(100*i/len(learning_rate)), "%")
         for j in range(len(n_iterations)):
             clf.fit_data(X_train,
+                        X_test,
                         y_train,
                         y_test, 
                         learning_rate=learning_rate[i],
@@ -57,7 +58,9 @@ def learning_rate_plot():
     for i in range(len(learning_rate)):
         print(100*i/len(learning_rate),'%')
         clf.fit_data(X_train,
+                    X_test,
                     y_train,
+                    y_test,
                     learning_rate=learning_rate[i],
                     n_iter=n_iterations
                     )
@@ -87,7 +90,7 @@ def n_iterations_plot():
 
     for j in range(len(n_iterations)):
         print(100*j/len(n_iterations),'%')
-        clf.fit_data(X_train, y_train,
+        clf.fit_data(X_train, X_test, y_train, y_test,
         learning_rate=learning_rate, n_iter=n_iterations[j])
         pred = clf.predict(X_test)
         accuracy = clf.accuracy(pred, y_test.flatten())
