@@ -18,19 +18,10 @@ class NeuralNetRegression:
         self.n_hidden_neurons = n_hidden_neurons
         self.L2_penalty = L2_penalty
         self.learning_rate = learning_rate
-        self.max_iter = 1000
+        self.max_iter = max_iter
         self.tol = tol
         self.verbose = verbose
         self.read_data = False
-
-
-    def setX(self,):
-        xy_zip = np.array(list(zip(self.x,self.y)))
-        poly = PolynomialFeatures(self.degree)   # using sklearn.preprocessing
-        self.X_ = poly.fit_transform(xy_zip)
-
-    def X(self):
-        return self.X_
 
 
     def train_test_split(self, X, y, test_size=0.3, random_state=4):
@@ -73,24 +64,15 @@ class NeuralNetRegression:
         return a_h, self.probabilities
 
     def backpropagation(self, X, y):
-        # Dont copy this. Dependent on cost function. Prolly easier though
         a_h, self.probabilities = self.feed_forward(X)
 
-        # error in the output layer
         error_output = self.probabilities - y
-        # print("error_o",error_output.shape)
-
-        # error in the hidden layer
         d_sigmoid = a_h * (1 - a_h)
-        # print("d_sig",d_sigmoid.shape)
-        # print("w_o:",self.output_weights.shape)
         error_hidden = np.matmul(error_output, self.output_weights.T) * d_sigmoid
 
-        # gradients for the output layer
         output_weights_gradient = np.matmul(a_h.T, error_output)
         output_bias_gradient = np.sum(error_output, axis=0)
 
-        # # gradient for the hidden layer
         hidden_weights_gradient = np.matmul(X.T, error_hidden)
         hidden_bias_gradient = np.sum(error_hidden, axis=0)
 
@@ -136,10 +118,7 @@ class NeuralNetRegression:
                     break
                 counter += 1
             else:
-                counter =0
-            # if ac1>ac2:
-            #     print ("hail Cthulhu devourer of worlds")
-            # regularization term gradients
+                counter = 0
 
             dWo += lmbd * self.output_weights
             dWh += lmbd * self.hidden_weights

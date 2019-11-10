@@ -10,13 +10,13 @@ runs the classifier class with data from the data package
 
 xls_file = "default_credit_card_data.xls"
 nn_clf = NeuralNetClassifier(
-                        n_hidden_neurons = 80,
-                        L2_penalty = 0.0001,
-                        learning_rate = 0.00001,
-                        max_iter = 500,
-                        tol = 1e-5,
-                        verbose = True
-                        )
+                    n_hidden_neurons = 80,
+                    L2_penalty = 0.0001,
+                    learning_rate = 0.00001,
+                    max_iter = 500,
+                    tol = 1e-5,
+                    verbose = True
+                    )
 
 
 X, y = nn_clf.read_credit_card_file(xls_file)
@@ -24,7 +24,7 @@ X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.33,
 nn_clf.initialize_weights(X_train, y_train)
 train_loss, test_loss, train_score, test_score = nn_clf.fit(X_train, y_train, X_test, y_test)
 
-def plot_accuracy_loss(train_score, test_score):
+def plot_accuracy_loss(train_loss, test_loss, train_score, test_score):
     plt.style.use("seaborn-talk")
     plt.plot(train_loss)
     plt.plot(test_loss)
@@ -51,7 +51,18 @@ def plot_accuracy_loss(train_score, test_score):
     print(f"Accuracy Score for testing set: {test_score}")
     #print(f"cost for training set: {test_loss[-1]}")
 
-plot_accuracy_loss(train_score, test_score)
+plot_accuracy_loss(train_loss, test_loss, train_score, test_score)
+
+
+
+
+
+
+
+
+
+
+
 
 def cumulative_gain():
     def bestCurve(y):
@@ -85,5 +96,15 @@ def cumulative_gain():
     ax.legend(["Not Default","Default","Baseline","Best"])
     plt.savefig("plots/NN_classifier/NN_cumulative_gain.png")
     plt.show()
+
+    not_default = ax.lines[0]
+    default = ax.lines[1]
+    baseline = ax.lines[2]
+    best = ax.lines[3]
+    from scipy.integrate import simps   
+    default_area     = simps(default.get_ydata(), default.get_xdata())
+    best_area = simps(best.get_ydata(), best.get_xdata())
+    baseline_area = simps(baseline.get_ydata(), baseline.get_xdata())
+    print("LogReg Area ratio",(default_area-baseline_area)/(best_area-baseline_area) )
 
 # cumulative_gain()

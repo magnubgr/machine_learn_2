@@ -17,7 +17,6 @@ import os
 Describe the model and input argument
 """
 
-
 class LogisticRegression:
     def __init__(self, verbose=False):
     # def __init__(self,x,y,y_data):
@@ -53,15 +52,15 @@ class LogisticRegression:
             test_costs.append(test_cost)
             train_costs.append(train_cost)
             train_scores.append( self.accuracy(y_train, self.prob(X_train,beta_new)>0.5) )
-            test_scores.append( self.accuracy(y_test,   self.prob(X_test, beta_new)>0.5) )
-            
-            if verbose: 
+            test_scores.append( self.accuracy(y_test,  self.prob(X_test,beta_new)>0.5) )
+
+            if verbose:
                 print("Loss:",train_cost)
-            
+
             beta_old = beta_new
             gradients = (1/m) * np.dot(X_train.T, (self.prob(X_train, beta_old) - y_train.reshape(-1,1)))
             beta_new = beta_old - learning_rate * gradients
-            
+
             if abs(np.sum(beta_new-beta_old))<tol:
                 print("below tolerance: ", tol)
                 break
