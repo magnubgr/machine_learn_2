@@ -30,6 +30,7 @@ def heat_map():
         for j in range(len(n_iterations)):
             clf.fit_data(X_train,
                         y_train,
+                        y_test, 
                         learning_rate=learning_rate[i],
                         n_iter=n_iterations[j])
             pred = clf.predict(X_test)
