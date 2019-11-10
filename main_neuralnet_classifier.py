@@ -48,7 +48,7 @@ def plot_accuracy_loss(train_score, test_score):
     test_probs = nn_clf.predict(X_test)
     test_score = nn_clf.accuracy(y_test, test_probs)
     #print(f"Accuracy Score for training set: {train_score}")
-    print(f"Accuracy Score for testing set:  {test_score}")
+    print(f"Accuracy Score for testing set: {test_score}")
     #print(f"cost for training set: {test_loss[-1]}")
 
 plot_accuracy_loss(train_score, test_score)

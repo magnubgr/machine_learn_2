@@ -12,11 +12,11 @@ X, y = clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.33, random_state=4)
 
 coef,train_costs,test_costs,train_scores,test_scores = clf.fit_data(
-                                                X_train, 
-                                                X_test, 
-                                                y_train, 
-                                                y_test, 
-                                                learning_rate=1.0, 
+                                                X_train,
+                                                X_test,
+                                                y_train,
+                                                y_test,
+                                                learning_rate=1.3,
                                                 n_iter=1000,
                                                 verbose=True
                                                 )
