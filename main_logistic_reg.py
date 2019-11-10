@@ -16,8 +16,8 @@ coef,train_costs,test_costs,train_scores,test_scores = clf.fit_data(
                                                 X_test, 
                                                 y_train, 
                                                 y_test, 
-                                                learning_rate=1.0, 
-                                                n_iter=1000,
+                                                learning_rate=1.3, 
+                                                n_iter=500,
                                                 verbose=True
                                                 )
 
@@ -79,6 +79,17 @@ def cumulative_gain():
     ax.legend(["Not Default","Default","Baseline","Best"])
     plt.savefig("plots/Logistic_Regression/LogReg_cumulative_gain.png")
     plt.show()
+
+    not_default = ax.lines[0]
+    default = ax.lines[1]
+    baseline = ax.lines[2]
+    best = ax.lines[3]
+    from scipy.integrate import simps   
+    default_area     = simps(default.get_ydata(), default.get_xdata())
+    best_area = simps(best.get_ydata(), best.get_xdata())
+    baseline_area = simps(baseline.get_ydata(), baseline.get_xdata())
+    print("LogReg Area ratio",(default_area-baseline_area)/(best_area-baseline_area))
+
     # fig, ax = plt.subplots()
     # skplt.metrics.plot_roc(y_test,y_probas, ax=ax, plot_micro=False, plot_macro=False)
     # skplt.metrics.plot_roc(y_test,y_actual_probas, ax=ax, plot_micro=False, plot_macro=False)
@@ -89,4 +100,4 @@ def cumulative_gain():
     # plt.savefig("plots/Logistic_Regression/LogReg_roc_curve.png")
     # plt.show()
 
-# cumulative_gain()
+cumulative_gain()

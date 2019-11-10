@@ -11,7 +11,7 @@ import sklearn.model_selection
 import sklearn.metrics
 import sys
 
-def regression():
+def nn_regression():
     # np.random.seed(12)
     n = 40
     x = np.linspace(0,1,n); np.random.shuffle(x)
@@ -21,15 +21,14 @@ def regression():
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
     y_d = (y_d-np.min(y_d))/(np.max(y_d)-np.min(y_d))
-    print(np.max(y_d), np.min(y_d))
 
 
     nn_reg = NeuralNetRegression(
-                        n_hidden_neurons=80,
+                        n_hidden_neurons=100,
                         L2_penalty=0.0001,
                         learning_rate=0.0001,
-                        max_iter=2000,
-                        tol=1e-6,
+                        max_iter=1000,
+                        tol=1e-10,
                         verbose=False)
 
     X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.33, random_state=4)
@@ -40,27 +39,27 @@ def regression():
     print(f"MSE = {nn_reg.MSE(y_test,pred)}")
     print(f"R2 ={nn_reg.R2(y_test,pred)}")
 
-    plt.style.use("seaborn-talk")
     plt.plot(train_loss)
     plt.plot(test_loss)
     plt.legend(["Training Loss","Testing Loss"])
     plt.xlabel("Iterations", size=15)
     plt.ylabel("Loss from MSE function", size=15)
+    plt.savefig("plots/NN_regressor/NN_reg_loss.png")
     plt.show()
 
-    plt.style.use("seaborn-talk")
     plt.plot(train_score[1:])
     plt.plot(test_score[1:])
     plt.legend(["Training R2 Score","Testing R2 Score"])
     plt.xlabel("Iterations", size=15)
     plt.ylabel("R2 Score", size=15)
+    plt.savefig("plots/NN_regressor/NN_reg_score.png")
+
     plt.show()
 
-regression()
 
 
 
-def regression_sklearn():
+def nn_regression_sklearn():
     """
     plots the test vs train dataset
     """
@@ -100,4 +99,7 @@ def regression_sklearn():
     plt.title("scikitlearn neural net for multiple n_iterations and for test and train")
     plt.show()
 
-# regression_sklearn()
+
+
+nn_regression()
+# nn_regression_sklearn()
