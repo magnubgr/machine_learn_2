@@ -37,6 +37,7 @@ plt.ylabel("Cost function", size=15)
 plt.savefig("plots/Logistic_Regression/logreg_costs.png")
 plt.show()
 
+print("cost train test",train_costs[-1], test_costs[-1])
 plt.plot(train_scores)
 plt.plot(test_scores)
 plt.title("Accuracy Score for test and train data")
@@ -45,7 +46,7 @@ plt.xlabel("Iteration (i)", size=15)
 plt.ylabel("Accuracy Score", size=15)
 plt.savefig("plots/Logistic_Regression/logreg_scores.png")
 plt.show()
-
+print("score train test",train_scores[-1], test_scores[-1])
 def cumulative_gain():
     def bestCurve(y):
         defaults = sum(y == 1)
