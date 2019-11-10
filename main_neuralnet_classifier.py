@@ -10,11 +10,11 @@ runs the classifier class with data from the data package
 
 xls_file = "default_credit_card_data.xls"
 nn_clf = NeuralNetClassifier(
-                        n_hidden_neurons = 50,
+                        n_hidden_neurons = 80,
                         L2_penalty = 0.0001,
                         learning_rate = 0.00001,
                         max_iter = 500,
-                        tol = 1e-4,
+                        tol = 1e-5,
                         verbose = True
                         )
 
@@ -42,7 +42,6 @@ plt.xlabel("Iterations", size=15)
 plt.ylabel("Accuracy Score", size=15)
 plt.savefig("plots/NN_classifier/NN_clf_training_score.png")
 plt.show()
-
 
 train_probs = nn_clf.predict(X_train)
 train_score = nn_clf.accuracy(y_train, train_probs)
