@@ -98,10 +98,7 @@ class NeuralNetClassifier:
                     break
                 counter += 1
             else:
-                counter =0
-            # if ac1>ac2:
-            #     print ("hail Cthulhu devourer of worlds")
-            # regularization term gradients
+                counter = 0
 
             dWo += lmbd * self.output_weights
             dWh += lmbd * self.hidden_weights
