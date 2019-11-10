@@ -53,7 +53,7 @@ class LogisticRegression:
             test_costs.append(test_cost)
             train_costs.append(train_cost)
             train_scores.append( self.accuracy(y_train, self.prob(X_train,beta_new)>0.5) )
-            test_scores.append( self.accuracy(y_test,  self.prob(X_test,beta_new)>0.5) )
+            test_scores.append( self.accuracy(y_test,   self.prob(X_test, beta_new)>0.5) )
             
             if verbose: 
                 print("Loss:",train_cost)

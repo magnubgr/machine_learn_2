@@ -11,12 +11,22 @@ clf = LogisticRegression()
 X, y = clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = clf.train_test_split(X, y, test_size=0.33, random_state=4)
 
-coef,train_costs,test_costs,train_scores,test_scores = clf.fit_data(X_train, X_test, y_train, y_test, learning_rate=1.3, n_iter=600,verbose=True)
+coef,train_costs,test_costs,train_scores,test_scores = clf.fit_data(
+                                                X_train, 
+                                                X_test, 
+                                                y_train, 
+                                                y_test, 
+                                                learning_rate=1.0, 
+                                                n_iter=1000,
+                                                verbose=True
+                                                )
 
-pred = clf.predict(X_test)# get an incorrect bad score
+pred = clf.predict(X_test)
 
 accuracy = clf.accuracy(pred, y_test.flatten())
-print(f"accuracy_score: {accuracy}")
+print(f"Test Accuracy_score: {accuracy}")
+cost = test_costs[-1]
+print(f"Test cost: {cost}")
 
 plt.plot(train_costs)
 plt.plot(test_costs)

@@ -25,14 +25,14 @@ def regression():
 
 
     nn_reg = NeuralNetRegression(
-                        n_hidden_neurons=50,
+                        n_hidden_neurons=80,
                         L2_penalty=0.0001,
-                        learning_rate=0.001,
-                        max_iter=1000,
-                        tol=1e-5,
-                        verbose=True)
+                        learning_rate=0.0001,
+                        max_iter=2000,
+                        tol=1e-6,
+                        verbose=False)
 
-    X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.3, random_state=4)
+    X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.33, random_state=4)
     nn_reg.initialize_weights(X_train, y_train)
     train_loss, test_loss, train_score, test_score = nn_reg.fit(X_train, y_train, X_test, y_test)
     pred = nn_reg.predict(X_test)
@@ -59,50 +59,6 @@ def regression():
 regression()
 
 
-def regression():
-    # np.random.seed(12)
-    n = 40
-    x = np.linspace(0,1,n); np.random.shuffle(x)
-    y = np.linspace(0,1,n); np.random.shuffle(y)
-    X,Y = np.meshgrid(x,y)
-    Z = FrankeFunction(X,Y)
-    X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
-    y_d = Z.ravel()[:, np.newaxis]
-    y_d = (y_d-np.min(y_d))/(np.max(y_d)-np.min(y_d))
-    print(np.max(y_d), np.min(y_d))
-
-
-    nn_reg = NeuralNetRegression(
-                        n_hidden_neurons=50,
-                        L2_penalty=0.0001,
-                        learning_rate=0.001,
-                        max_iter=1000,
-                        tol=1e-5,
-                        verbose=True)
-
-    X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.3, random_state=4)
-    nn_reg.initialize_weights(X_train, y_train)
-    train_loss, test_loss, train_score, test_score = nn_reg.fit(X_train, y_train, X_test, y_test)
-    pred = nn_reg.predict(X_test)
-
-    print(f"MSE = {nn_reg.MSE(y_test,pred)}")
-    print(f"R2 ={nn_reg.R2(y_test,pred)}")
-
-    plt.style.use("seaborn-talk")
-    plt.plot(train_loss)
-    plt.plot(test_loss)
-    plt.legend(["Training Loss","Testing Loss"])
-    plt.xlabel("Iterations", size=15)
-    plt.ylabel("Loss from MSE function", size=15)
-    plt.show()
-
-    plt.style.use("seaborn-talk")
-    plt.plot(train_score)
-    plt.plot(test_score)
-    plt.legend(["Training R2 Score","Testing R2 Score"])
-    plt.xlabel("Iterations", size=15)
-    plt.ylabel("R2 Score", size=15)
-    plt.show()
 
 def regression_sklearn():
     """
@@ -116,7 +72,7 @@ def regression_sklearn():
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
-    X_d, y_d, test_size=0.95)
+                                                        X_d, y_d, test_size=0.33)
     m = 40
     n_iterations = np.linspace(330,360,m,dtype=int)
     R2_score_train = np.zeros(m)

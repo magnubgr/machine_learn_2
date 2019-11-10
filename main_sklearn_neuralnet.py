@@ -10,6 +10,8 @@ import sklearn.neural_network
 import sklearn.model_selection
 import sklearn.metrics
 import sys
+import scipy.special as scs
+
 
 """
 scikitlearns neuralnet methods used in both the classifier and regression case 
@@ -21,9 +23,12 @@ def classifier():
     clf = LogisticRegression()
     X, y = clf.read_credit_card_file(xls_file)
     X_train, X_test, y_train, y_test = clf.train_test_split(X, y,
-                                   test_size=0.3, random_state=4)
-    n = 7
-    learning_rate = 10**(-np.linspace(1,n,n))
+                                   test_size=0.33, random_state=4)
+    
+    # n = 2
+    # learning_rate = 10**(-np.linspace(1,n,n))
+    learning_rate = np.array([0.01, 0.001, 0.0001, 0.00001])
+    n = len(learning_rate)
     timer = np.zeros(n)
     accuracy_score = np.zeros(n)
 
@@ -32,15 +37,15 @@ def classifier():
         time1 = time.time()
         print(int(100*i/len(learning_rate)), "%")
         reg = sklearn.neural_network.MLPClassifier(
-                                hidden_layer_sizes = (50,50,50),
+                                hidden_layer_sizes = (40, 40, 40, 40),
                                 learning_rate = "adaptive",
                                 learning_rate_init = learning_rate[i],
-                                max_iter = 1000,
-                                tol = 1e-20,
+                                max_iter = 2500,
+                                tol = 1e-10,
                                 verbose = False,
                                 )
         reg = reg.fit(X_train, y_train.ravel())
-        predict= reg.predict(X_test)
+        predict = reg.predict(X_test)
         accuracy_score[i] = reg.score(X_test,y_test.ravel())
         time2 = time.time()
         timer[i] =time2 -time1
@@ -50,11 +55,12 @@ def classifier():
     # print(f" \n accuracy ={reg.score(X_test, y_test.ravel())}")
     plt.semilogx(learning_rate,accuracy_score, "*")
     plt.semilogx(learning_rate,accuracy_score)
-    plt.xlabel("learning_rate")
-    plt.ylabel("accuracy score")
-    plt.title("scikitlearn neural net for multiple learning rates")
+    plt.xlabel(r"Learning rate $\eta$")
+    plt.ylabel("Accuracy score")
+    plt.title("Scikit-Learn NeuralNet score for different learning rates")
     plt.show()
-    print(timer)
+
+    # print(timer)
     print(accuracy_score)
 
 
@@ -69,7 +75,10 @@ def regression():
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
-    X_d, y_d, test_size=0.4)
+                                                                        X_d, 
+                                                                        y_d, 
+                                                                        test_size=0.33
+                                                                        )
 
     m = 60
     features = (np.linspace(10,m,m/5,dtype=float))
@@ -97,4 +106,4 @@ def regression():
     plt.show()
 
 
-regression()
+classifier()

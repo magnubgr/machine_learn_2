@@ -106,8 +106,9 @@ def n_iterations_plot():
 def scikit_LogReg_n_iter():
     ##### Scikit-Learn Logistic regression #####
     print("running accuracy vs iterations plot. ScikitLearn")
-    n_iterations = np.arange(2,200,5)
+    n_iterations = np.arange(0,200,20)
     accuracy_score = np.zeros(len(n_iterations))
+    costs = np.zeros(len(n_iterations))
     for i in range(len(n_iterations)):
         if 100*i%len(n_iterations) == 0:
             print(int(100*i/len(n_iterations)), "%")
@@ -120,7 +121,11 @@ def scikit_LogReg_n_iter():
         prediction = log_reg.predict(X_test)
 
         accuracy_score[i] = clf.accuracy(prediction,y_test)
+        proba = log_reg.predict_proba(X_test)
+        costs[i] = -np.mean( y_test*np.log(proba) + (1-y_test)*np.log(1-proba) )
 
+    print("Skl LogReg Score",accuracy_score)
+    print("Skl LogReg Costs",costs)
 
     plt.plot(n_iterations, accuracy_score, label="scikitlearn")
     plt.title(r"The accuracy for different n_iterations for Scikitlearn", size=20)
@@ -128,8 +133,8 @@ def scikit_LogReg_n_iter():
     plt.ylabel(r"accuracy ", size=18)
 
 # n_iterations_plot()
-# scikit_LogReg_n_iter()
+scikit_LogReg_n_iter()
 # learning_rate_plot()
-heat_map()
-# plt.legend()
-# plt.show()
+# heat_map()
+plt.legend()
+plt.show()
