@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from Regression_package.LogisticRegressor import LogisticRegression
 from Regression_package.Franke_function import FrankeFunction
-from NeuralNet_package.neural_v2 import NeuralNetRegression
+from NeuralNet_package.neuralnet import NeuralNetRegression
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import time

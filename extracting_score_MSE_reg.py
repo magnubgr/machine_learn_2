@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from Regression_package.LogisticRegressor import LogisticRegression
 from Regression_package.Franke_function import FrankeFunction
-from NeuralNet_package.neural_v2 import NeuralNetRegression
+from NeuralNet_package.neuralnet import NeuralNetRegression
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import time
@@ -12,7 +12,7 @@ import sklearn.metrics
 import sys
 
 np.random.seed(2019)
-def regression_package():
+def neural_net_reg():
     # np.random.seed(12)
     n = 50
     x = np.linspace(0,1,n); np.random.shuffle(x)
@@ -28,13 +28,13 @@ def regression_package():
     nn_reg = NeuralNetRegression(
                         n_hidden_neurons=120,
                         L2_penalty=0.0001,
-                        learning_rate=0.00000001,
-                        max_iter=1000000,
+                        learning_rate=0.00001,
+                        max_iter=1000,
                         tol=1e-20,
                         verbose=True)
 
     X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.33, random_state=4)
-    nn_reg.initialize_weights(X_train, y_train)
+    nn_reg.initialize_weights(X_train, n_output_neurons=1)
     train_loss, test_loss, train_score, test_score = nn_reg.fit(X_train, y_train, X_test, y_test)
     pred = nn_reg.predict(X_test)
 
@@ -57,10 +57,8 @@ def regression_package():
     plt.ylabel("R2 Score", size=15)
     plt.show()
 
-# regression_package()
 
-
-def regression_sklearn():
+def neural_net_reg_sklearn():
     # np.random.seed(12)
     n = 50
     x = np.linspace(0,1,n); np.random.shuffle(x)
@@ -82,7 +80,7 @@ def regression_sklearn():
                                 learning_rate_init=0.00001,
                                 max_iter= 10000,
                                 tol = 1e-11,
-                                verbose = False,
+                                verbose = True,
                                 )
         reg = reg.fit(X_train,y_train)
         pred = reg.predict(X_test)
@@ -98,4 +96,5 @@ def regression_sklearn():
     plt.show()
 
 
-regression_sklearn()
+neural_net_reg()
+# neural_net_reg_sklearn()

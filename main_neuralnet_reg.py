@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from Regression_package.LogisticRegressor import LogisticRegression
 from Regression_package.Franke_function import FrankeFunction
-from NeuralNet_package.neural_v2 import NeuralNetRegression
+from NeuralNet_package.neuralnet import NeuralNetRegression
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 import time
@@ -32,7 +32,7 @@ def nn_regression():
                         verbose=False)
 
     X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.33, random_state=4)
-    nn_reg.initialize_weights(X_train, y_train)
+    nn_reg.initialize_weights(X_train, n_output_neurons=1)
     train_loss, test_loss, train_score, test_score = nn_reg.fit(X_train, y_train, X_test, y_test)
     pred = nn_reg.predict(X_test)
 

@@ -21,7 +21,7 @@ nn_clf = NeuralNetClassifier(
 
 X, y = nn_clf.read_credit_card_file(xls_file)
 X_train, X_test, y_train, y_test = nn_clf.train_test_split(X, y, test_size=0.33, random_state=4)
-nn_clf.initialize_weights(X_train, y_train)
+nn_clf.initialize_weights(X_train, n_output_neurons=1)
 train_loss, test_loss, train_score, test_score = nn_clf.fit(X_train, y_train, X_test, y_test)
 
 def plot_accuracy_loss(train_loss, test_loss, train_score, test_score):
