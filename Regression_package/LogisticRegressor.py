@@ -91,7 +91,6 @@ class LogisticRegression:
         Preprocessing the data.
         Returns the total design matrix X and the output data y.
         """
-        #extract the data
         self.read_data = True
         path = os.path.dirname(os.path.realpath(__file__))
         file = path + "/../data/" + xls_file

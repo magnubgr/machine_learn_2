@@ -133,8 +133,8 @@ def scikit_LogReg_n_iter():
     plt.ylabel(r"accuracy ", size=18)
 
 # n_iterations_plot()
-scikit_LogReg_n_iter()
-# learning_rate_plot()
+# scikit_LogReg_n_iter()
+learning_rate_plot()
 # heat_map()
 plt.legend()
 plt.show()

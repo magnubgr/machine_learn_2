@@ -7,12 +7,12 @@
 
 
 echo "1"
-python main_logistic_reg.py
+python logreg_plots.py
 echo "2"
-python main_comparing_logistic.py
+python logreg_comparing_performance_sklearn.py
 echo "3"
-python main_neuralnet.py
+python neuralnet_clf_performance_test.py
 echo "4"
-python main_sklearn_neuralnet.py
+python neuralnet_reg_comparison_sklearn.py
 # echo "5"
 # python main.py

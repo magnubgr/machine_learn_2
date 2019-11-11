@@ -8,19 +8,18 @@ import os
 
 
 """
-super class
+Super-class for the Neural Network classes
 """
 class NeuralNet:
 
     def sigmoid(self,t):
-        """
-
-        """
+        """ Returns the sigmoid function of a given number 't' """
         return 1.0/(1 + np.exp(-t))
 
     def train_test_split(self, X, y, test_size=0.3, random_state=4):
-        """
-
+        """ 
+        This method is just an implementation of ..
+        Scikit-Learns train_test_split for use in our own class.         
         """
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=4)
         return X_train, X_test, y_train, y_test
@@ -28,7 +27,9 @@ class NeuralNet:
 
     def initialize_weights(self, X, n_output_neurons=1):
         """
-
+        This method creates the architecture of the network.
+        It initializes the weights and biases of the system.
+        Only works for a one hidden layer neural network.  
         """
         n_inputs, n_features = X.shape
         n_outputs = n_output_neurons
@@ -39,10 +40,26 @@ class NeuralNet:
         self.output_weights = np.random.randn(self.n_hidden_neurons, n_outputs)
         self.output_bias = np.zeros(n_outputs) + 0.01
 
+    def feed_forward(self, X):
+        """
+        The feed forward method takes the input and runs it through the network.
+        That means adding the weighted sum, using activation function for both .. 
+        the hidden layer and the output layer. 
+        """
+        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
+        a_h = self.sigmoid(z_h)
+
+        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
+        probabilities = self.sigmoid(z_o)
+        return a_h, probabilities
+
+
+
+
+
 """
 Neural Network for Classification.
 """
-
 class NeuralNetClassifier(NeuralNet):
     def __init__(
             self,
@@ -61,16 +78,10 @@ class NeuralNetClassifier(NeuralNet):
         self.verbose = verbose
         self.read_data = False
 
-
-
-
-
-    def cost(self,y_pred, y):
+    def cost(self, y_pred, y):
         """
-
+        This cost method uses the cross-entropy loss function.
         """
-        ## Using the cross-entropy cost function
-        # y = y.reshape(-1,1) # Test if needed
         total_loss = -np.mean(
                             scs.xlogy(y,y_pred)
                             + scs.xlogy(1-y, 1-y_pred)
@@ -79,12 +90,12 @@ class NeuralNetClassifier(NeuralNet):
 
     def fit(self, X_train, y_train, X_test, y_test):
         """
-
+        This fit method uses the regular gradient descent to train the network. 
+        It also stores the loss and scores for each learning iteration for test and train sets.
+        The method calls the backpropagation method.
         """
-        train_loss = []
-        test_loss = []
-        train_score = []
-        test_score = []
+        train_loss, test_loss = [], []
+        train_score, test_score = [], []
         eta = self.learning_rate
         lmbd = self.L2_penalty
         counter = 0
@@ -99,9 +110,9 @@ class NeuralNetClassifier(NeuralNet):
 
             test_predict = self.predict(X_test)
             test_loss.append( self.cost( test_predict , y_test) )
-            test_score.append( self.accuracy(y_test, test_predict>0.5) )
+            test_score.append( self.accuracy(y_test, test_predict) )
             if self.verbose:
-                print ("cost_function", cost1)
+                print ("Cost:", cost1)
 
             dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
 
@@ -125,32 +136,20 @@ class NeuralNetClassifier(NeuralNet):
             self.hidden_bias -= eta * dBh
         return train_loss, test_loss, train_score, test_score
 
-    def feed_forward(self, X):
-        """
-
-        """
-        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
-        a_h = self.sigmoid(z_h)
-
-        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
-
-        probabilities = self.sigmoid(z_o)
-        return a_h, probabilities
 
     def predict(self, X):
         """
+        This method takes the probabilites from the feed forward method,
+        and returns an output with 0's and 1's.
         """
-        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
-        a_h = self.sigmoid(z_h)
-
-        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
-
-        probabilities = self.sigmoid(z_o)
+        a_h, probabilities = self.feed_forward(X)
         return probabilities>0.5
+
 
     def backpropagation(self, X, y):
         """
-
+        The backpropagation method is in charge of creating the gradients, 
+        and uses matrix multiplication to make use of numpy's speed.
         """
         a_h, self.probabilities = self.feed_forward(X)
 
@@ -163,7 +162,6 @@ class NeuralNetClassifier(NeuralNet):
 
         hidden_weights_gradient = np.matmul(X.T, error_hidden)
         hidden_bias_gradient = np.sum(error_hidden, axis=0)
-
         
         # a_h, self.probabilities = self.feed_forward(X)
         # a_o = self.probabilities
@@ -199,7 +197,9 @@ class NeuralNetClassifier(NeuralNet):
 
     def read_credit_card_file(self, xls_file):
         """
-
+        Reads the credit card data
+        Preprocessing the data.
+        Returns the total design matrix X and the output data y.
         """
 
         self.read_data = True
@@ -282,25 +282,15 @@ class NeuralNetRegression(NeuralNet):
 
     def cost(self, y_data, y_actual):
         """
-
+        This method uses the regular Mean Squared Error to create the cost.
         """
         return self.MSE(y_data, y_actual)
 
-    def feed_forward(self, X):
-        """
-        
-        """
-        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
-        a_h = self.sigmoid(z_h)
-
-        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
-
-        self.probabilities = self.sigmoid(z_o)
-        return a_h, self.probabilities
 
     def backpropagation(self, X, y):
         """
-
+        The backpropagation method is in charge of creating the gradients, 
+        and uses matrix multiplication to make use of numpy's speed.
         """
         a_h, self.probabilities = self.feed_forward(X)
 
@@ -319,12 +309,12 @@ class NeuralNetRegression(NeuralNet):
 
     def fit(self, X_train, y_train, X_test, y_test):
         """
-
+        This fit method uses the regular gradient descent to train the network. 
+        It also stores the loss and scores for each learning iteration for test and train sets.
+        The method calls the backpropagation method.
         """
-        train_loss = []
-        test_loss = []
-        train_score = []
-        test_score = []
+        train_loss, test_loss = [], []
+        train_score, test_score = [], []
         eta = self.learning_rate
         lmbd = self.L2_penalty
         counter = 0
@@ -341,7 +331,7 @@ class NeuralNetRegression(NeuralNet):
             test_loss.append( self.cost( test_predict , y_test) )
             test_score.append( self.R2(y_test, test_predict) )
             if self.verbose:
-                print ("cost_function", cost1)
+                print ("Cost:", cost1)
 
             dWo, dBo, dWh, dBh = self.backpropagation(X_train, y_train)
 
@@ -366,24 +356,12 @@ class NeuralNetRegression(NeuralNet):
         return train_loss, test_loss, train_score, test_score
 
 
-
     def predict(self, X):
         """
-
+        This method returns the prediction from the neural network.
         """
-        z_h = np.matmul(X, self.hidden_weights) + self.hidden_bias
-        a_h = self.sigmoid(z_h)
-
-        z_o = np.matmul(a_h, self.output_weights) + self.output_bias
-
-        ## Softmax activation:
-            # exp_term = np.exp(z_o)
-            # self.probabilities = exp_term / np.sum(exp_term, axis=1, keepdims=True)
-
-        ## Sigmoid activation
-        probabilities = self.sigmoid(z_o)
+        a_h, probabilities = self.feed_forward(X)
         return probabilities
-
 
     def var(self,l):
         """
