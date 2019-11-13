@@ -26,9 +26,9 @@ def neural_net_reg():
 
 
     nn_reg = NeuralNetRegression(
-                        n_hidden_neurons=100,
-                        L2_penalty=0.00001,
-                        learning_rate=0.0001,
+                        n_hidden_neurons=60,
+                        L2_penalty=0.0001,
+                        learning_rate=0.00001,
                         max_iter=1000,
                         tol=1e-8,
                         verbose=True)
@@ -66,8 +66,8 @@ def neural_net_reg_sklearn_singlelayer():
     X_d = np.c_[X.ravel()[:, np.newaxis], Y.ravel()[:, np.newaxis]]
     y_d = Z.ravel()[:, np.newaxis]
     X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(
-                                                                        X_d, 
-                                                                        y_d, 
+                                                                        X_d,
+                                                                        y_d,
                                                                         test_size=0.33)
 
     m = 1
@@ -138,5 +138,5 @@ def neural_net_reg_sklearn_multilayer():
 
 
 neural_net_reg()
-neural_net_reg_sklearn_singlelayer()
-neural_net_reg_sklearn_multilayer()
+# neural_net_reg_sklearn_singlelayer()
+# neural_net_reg_sklearn_multilayer()
