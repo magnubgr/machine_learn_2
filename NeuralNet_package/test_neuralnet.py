@@ -1,5 +1,4 @@
-from NeuralNet_package.neuralnet import NeuralNetClassifier
-from NeuralNet_package.neural_v2 import NeuralNetRegression
+from NeuralNet_package.neuralnet import NeuralNetClassifier, NeuralNetRegression
 import numpy as np
 import unittest
 
