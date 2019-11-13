@@ -19,8 +19,8 @@ def heat_map():
     # learning_rate = np.arange(0,1,0.5)
     print("creating heatmap of the accuracy vs learning_rate\
     and # of iterations ")
-    learning_rate = np.linspace(0.0,2,21)
-    n_iterations = np.linspace(30,300,18, dtype=int)
+    learning_rate = np.linspace(0.0,2.5,21)
+    n_iterations = np.linspace(50,250,21, dtype=int)
 
     accuracy_score = np.zeros((len(learning_rate),len(n_iterations)))
 
@@ -39,9 +39,9 @@ def heat_map():
             accuracy_score[i,j]=accuracy
     heat_map = sb.heatmap(accuracy_score, xticklabels=n_iterations, yticklabels=learning_rate,  cmap="viridis")
     heat_map.set_yticklabels(heat_map.get_yticklabels(), rotation=0)
-    plt.title(r"Heatmap of accuracy_score for different learning_rate and iterations", size=20)
-    plt.ylabel(r"learning_rate $\gamma $ ", size=18)
-    plt.xlabel(r"n_iterations ", size=18)
+    plt.title(r"Heatmap of accuracy_score for different learning_rate and iterations", size=16)
+    plt.ylabel(r"Learning rate $\gamma $ ", size=17)
+    plt.xlabel(r"n_iterations ", size=17)
     plt.savefig("plots/Logistic_Regression/LogReg_heatmap.png")
     plt.show()
     print( np.max(accuracy_score) ,np.where(np.max(accuracy_score)==accuracy_score)[0:1])
@@ -52,7 +52,7 @@ def heat_map():
 
 def learning_rate_plot():
     print ("plotting accuacry as a function of learning_rate")
-    learning_rate = np.linspace(0.001,2,50)
+    learning_rate = np.linspace(0.0,3,100)
     n_iterations = 200
     accuracy_score = np.zeros(len(learning_rate))
     for i in range(len(learning_rate)):
@@ -67,11 +67,12 @@ def learning_rate_plot():
         pred = clf.predict(X_test)
         accuracy_score[i]= clf.accuracy(pred, y_test.flatten())
 
-    plt.plot(learning_rate, accuracy_score, "*")
+    # plt.plot(learning_rate, accuracy_score, "*")
     plt.plot(learning_rate, accuracy_score)
-    plt.title(r"The accuracy for different learning rate at n_iterations ="+str(n_iterations), size=20)
-    plt.xlabel(r"learning_rate $\gamma $", size=18)
-    plt.ylabel(r"accuracy ", size=18)
+    plt.title(r"Accuracy for different learning rates, n_iter="+str(n_iterations), size=17)
+    plt.xlabel(r"Learning rate $\gamma $", size=17)
+    plt.ylabel(r"Accuracy ", size=17)
+    plt.show()
 
 def printing_accuracy(learning_rate, n_iterations):
     clf.fit_data(X_train, y_train,
@@ -132,9 +133,12 @@ def scikit_LogReg_n_iter():
     plt.xlabel(r"n_iterations ", size=18)
     plt.ylabel(r"accuracy ", size=18)
 
+
+## Uncomment the function you want to run:
+heat_map()
 # n_iterations_plot()
 # scikit_LogReg_n_iter()
-learning_rate_plot()
-# heat_map()
+# learning_rate_plot()
+
 plt.legend()
 plt.show()

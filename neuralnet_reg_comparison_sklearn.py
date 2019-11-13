@@ -26,11 +26,11 @@ def neural_net_reg():
 
 
     nn_reg = NeuralNetRegression(
-                        n_hidden_neurons=120,
-                        L2_penalty=0.0001,
-                        learning_rate=0.00001,
+                        n_hidden_neurons=100,
+                        L2_penalty=0.00001,
+                        learning_rate=0.0001,
                         max_iter=1000,
-                        tol=1e-20,
+                        tol=1e-8,
                         verbose=True)
 
     X_train, X_test, y_train, y_test = nn_reg.train_test_split(X_d, y_d, test_size=0.33, random_state=4)
@@ -41,16 +41,15 @@ def neural_net_reg():
     print(f"MSE = {nn_reg.MSE(y_test,pred)}")
     print(f"R2 ={nn_reg.R2(y_test,pred)}")
 
-    plt.plot(train_loss[1:-1:60])
-    plt.plot(test_loss[1:-1:60])
+    plt.plot(train_loss)
+    plt.plot(test_loss)
     plt.legend(["Training Loss","Testing Loss"])
     plt.xlabel("Iterations", size=15)
     plt.ylabel("Loss from MSE function", size=15)
     plt.show()
 
-    plt.style.use("seaborn-talk")
-    plt.plot(train_score[1:-1:60])
-    plt.plot(test_score[1:-1:60])
+    plt.plot(train_score)
+    plt.plot(test_score)
     plt.legend(["Training R2 Score","Testing R2 Score"])
     plt.xlabel("Iterations", size=15)
     plt.ylabel("R2 Score", size=15)
